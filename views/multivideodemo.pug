@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  #message
+  input(type="file",multiple,accept="video/*")
+  <br>
+
+  video(controls,id="Cantus", autoplay,width="25%")
+  video(controls,id="Altus", autoplay,width="25%")
+  video(controls,id="Tenor", autoplay,width="25%")
+  video(controls,id="Bassus", autoplay,width="25%")
+  <br>
+  video(controls,id="Master", autoplay,width="50%")
+  video(controls,id="MasterMenu", autoplay,width="50%")
+  <br>
+  script(src="javascripts/multivideodemo.js")

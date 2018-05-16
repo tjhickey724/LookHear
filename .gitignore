@@ -1,0 +1,10 @@
+.DS_Store
+*~
+videos
+images
+pieces
+.dropbox
+OLD
+demo_files
+notes*
+node_modules
