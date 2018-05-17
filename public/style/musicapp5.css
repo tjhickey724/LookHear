@@ -1,0 +1,112 @@
+select#thePiece {
+  font: 16pt 'Times New Roman'
+}
+
+.lookhear {
+  font: bold 18pt fantasy
+}
+
+.desctitle {
+  font-weight:bold;
+  font-style:italic;
+  font-size:larger;
+}
+
+.insttitle {
+  font-weight:bold;
+  font-size:larger;
+}
+
+h1 {
+  margin:0px !important;
+}
+p#description {
+  margin-top: -30px;
+  font: 10pt 'Times New Roman'
+}
+
+div {
+  margin:0px;
+  padding:0px;
+}
+.chooser{
+  float:left;
+
+}
+#instructions td {
+  border:thin solid blue;
+  padding:20px;
+}
+
+#thePiece {
+  position:absolute;
+  right:0px;
+  top:0px;
+}
+.slider{
+  float:left;
+  clear:right;
+  width:100%;
+}
+#theTime {
+  padding-left:20px;
+  clear:left;
+}
+#timeSlider{
+  width:100%;
+}
+.pane {
+}
+.ui-layout-north {
+  background-color:#aaccff;
+  background-image:url(/images/paperbackground.jpg);
+  text-align:center;
+  padding:0px;
+  margin:0px;
+  font: bold 24pt fantasy
+}
+
+
+h1 {
+  padding:0px;
+  margin:0px;
+}
+
+
+.ui-layout-center {
+background-color:#d6d6c2;
+background-image:url(/images/desk_texture.jpg);
+
+}
+
+.ui-layout-east h1{
+  font-size:12pt;
+}
+
+.ui-layout-east {
+  background-color:#ffcc66;
+  font:9pt Times,serif;
+}
+.ui-layout-west {
+  background-color:#ffe6b3;
+
+}
+
+.ui-layout-south {
+  background-image:url(/images/paper2.jpg);
+  font:11pt Times,serif;
+}
+
+.slider{
+ width:85%;
+}
+
+.chooser{
+  width:10%;
+  height: 20px;
+
+}
+
+.part{
+  width:100%
+}
