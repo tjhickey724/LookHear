@@ -1,12 +1,14 @@
 extends layout
 
 block content
+
   div#container(class="flex-container")
     div(class="pane ui-layout-north")
       h1 LookHear
       p#description An insider’s view of 16th-c polyphony: its notation and its sound - developed by Timothy Hickey & Sarah Mead
       br
-      span ALPHA VERSION
+      span#message ALPHA VERSION
+      input(type="file",multiple,accept="video/*")
 
       select#thePiece(onChange="changePiece()")
         option Select a piece
@@ -99,20 +101,27 @@ block content
 
         video(width="0%", id= 'altus', class="musicvideo noPadding")
           source(id="altus-source", src= 'pieces/ortoMotet/videos/Altus.mp4')
-        video(width="0%", id= 'altus', class="musicvideo noPadding")
+        video(width="0%", id= 'score', class="musicvideo noPadding")
           source(id="score-source", src= 'pieces/ortoMotet/videos/Master.mp4')
-        video(width="0%", id= 'altus', class="musicvideo noPadding")
+        video(width="0%", id= 'cantus', class="musicvideo noPadding")
           source(id="cantus-source", src= 'pieces/ortoMotet/videos/Cantus.mp4')
-        video(width="0%", id= 'altus', class="musicvideo noPadding")
+        video(width="0%", id= 'tenor', class="musicvideo noPadding")
           source(id="tenor-source", src= 'pieces/ortoMotet/videos/Tenor.mp4')
-        video(width="0%", id= 'altus', class="musicvideo noPadding")
+        video(width="0%", id= 'bassus', class="musicvideo noPadding")
           source(id="bassus-source", src= 'pieces/ortoMotet/videos/Bassus.mp4')
-        video(width="0%", id= 'altus', class="musicvideo noPadding")
+        video(width="0%", id= 'mastermenu', class="musicvideo noPadding")
           source(id="mastermenu-source", src= 'pieces/ortoMotet/videos/MasterMenu.mp4')
+  script(type="text/javascript", src="/js/jquery.js")
+  script(type="text/javascript", src="/js/jquery-ui.js")
+  script(type="text/javascript", src="js/jquery.layout.js")
+  script(src="lib/animations.js")
+  script(src="pieces/ortoMotet/animations/altus.js")
+  script(src="pieces/ortoMotet/animations/cantus.js")
+  script(src="pieces/ortoMotet/animations/bassus.js")
+  script(src="pieces/ortoMotet/animations/tenor.js")
+  script(src="pieces/ortoMotet/animations/score.js")
+  script(src="lib/rangeslider.js")
+  script(src="javascripts/multivideodemo.js")
+  script(src="lib/musicapp4.js")
 
-    script(type="text/javascript", src="/js/jquery.js")
-    script(type="text/javascript", src="/js/jquery-ui.js")
-    script(type="text/javascript", src="js/jquery.layout.js")
-    script(type="text/javascript", src="js2/layoutsave.js")
-    script(src="lib/animations.js")
-    script(src="lib/musicapp4.js")
+  script(type="text/javascript" src="js/startCode.js")
