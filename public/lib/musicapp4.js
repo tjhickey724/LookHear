@@ -241,6 +241,7 @@ function switchPart(part){
 function switchVideo(part){
 $(".musicvideo").attr("width","0%");
 $("#"+part).attr("width","100%");
+console.log("switching to '"+part+"'")
  video = document.getElementById(part);
 }
 
@@ -317,7 +318,51 @@ function switchPiece(piece){
   console.dir(partModel);
   $(".description").hide();
   $("."+piece).show();
-  alert("please select the pieces to hear")
+
+  console.log("The selected piece is "+piece)
+
+  var theFiles = {
+    master: {name:'/pieces/'+piece+'/videos/Master.mp4',type:'video/mp4'},
+    altus: {name:'/pieces/'+piece+'/videos/Altus.mp4',type:'video/mp4'},
+    cantus: {name:'/pieces/'+piece+'/videos/Cantus.mp4',type:'video/mp4'},
+    tenor: {name:'/pieces/'+piece+'/videos/Tenor.mp4',type:'video/mp4'},
+    bassus: {name:'/pieces/'+piece+'/videos/Bassus.mp4',type:'video/mp4'},
+    mastermenu: {name:'/pieces/'+piece+'/videos/MasterMenu.mp4',type:'video/mp4'},
+   }
+
+
+
+  var playSelectedFile = function (file, id){
+    console.dir(file)
+    console.log(id)
+    var type = file.type
+    var vid = id //file.name.substring(file.name.lastIndexOf("/")+1,file.name.indexOf("."))
+    console.log(`vid=${vid} type=${type} file=${JSON.stringify(file)}`)
+    var videoNode = document.getElementById(vid)
+    console.dir(['videoNode',videoNode])
+    var req = new XMLHttpRequest();
+    req.open('GET', file.name, true);
+    req.responseType = 'blob';
+    req.onload = function() {
+       if (this.status === 200) {
+          var videoBlob = this.response;
+          var vid = URL.createObjectURL(videoBlob); // IE10+
+          videoNode.src = vid;
+       }
+    }
+    req.onerror = function() {
+    }
+    req.send();
+    return videoNode
+  }
+
+  playSelectedFile(theFiles.master,'score')
+  playSelectedFile(theFiles.cantus,'cantus')
+  playSelectedFile(theFiles.altus,'altus')
+  playSelectedFile(theFiles.tenor,'tenor')
+  playSelectedFile(theFiles.bassus,'bassus')
+  playSelectedFile(theFiles.mastermenu,'mastermenu')
+
   /*
   $("#score-source").attr("src","pieces/"+piece+"/videos/Master.mp4");
   $("#cantus-source").attr("src","pieces/"+piece+"/videos/Cantus.mp4");
@@ -325,13 +370,14 @@ function switchPiece(piece){
   $("#tenor-source").attr("src","pieces/"+piece+"/videos/Tenor.mp4");
   $("#bassus-source").attr("src","pieces/"+piece+"/videos/Bassus.mp4");
   $("#mastermenu-source").attr("src","pieces/"+piece+"/videos/MasterMenu.mp4");
-  */
+  *
   var video = document.getElementById('cantus'); video.load();video.play();video.muted=true
   var video = document.getElementById('altus'); video.load();video.play();video.muted=true
   var video = document.getElementById('tenor'); video.load();video.play();video.muted=true
   var video = document.getElementById('bassus'); video.load();video.play();video.muted=true
   var video = document.getElementById('score'); video.load();video.play();video.muted=false
   var video = document.getElementById('mastermenu'); video.load();video.play();video.muted=true
+  */
 
 
   switchVideo("score");
