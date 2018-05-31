@@ -8,7 +8,7 @@ block content
       p#description An insider’s view of 16th-c polyphony: its notation and its sound - developed by Timothy Hickey & Sarah Mead
       br
       span#message
-      button#startVideos(disabled) Start 
+      button#startVideos(disabled) Start
 
       select#thePiece(onChange="changePiece()")
         option Select a piece
@@ -56,12 +56,14 @@ block content
       div(class="ortoMotet description")
         p
           |Marbrianus de Orto (c.1460-1529)<br>
-          |<i>Ave Maria gratia plena</i><br>
+          i Ave Maria gratia plena
+          br
           |4-voice motet based on plainsong melody
 
         p
-          |<span class="desctitle">Source:</span><br>
-          |Petrucci: <i>Harmonice musices odhecaton A</i> (Venice, 1501)<br>
+          span(class="desctitle") Source
+          br
+          |Petrucci: <i>Harmonice musices odhecaton A</i> (Venice, 1501)
           |Single book with all parts on facing pages<br>
           |1st piece [A3v-A4r] of 96 in the collection<br>
 
@@ -74,7 +76,7 @@ block content
           |<i>Bassus:</i> Emily Walhout
 
 
-      div class="zirlerMotet description">
+      div(class="zirlerMotet description")
         p
           |Stephan Zirler (c.1518-1568)<br>
           |<i>Beati omnes qui timent Dominum</i><br>

@@ -304,6 +304,10 @@ function changePiece(){
 }
 
 function switchPiece(piece){
+  document.getElementById('startVideos').innerHTML = "Start"
+  document.getElementById('startVideos').disabled = true
+  //video.stop()
+  //running = false
   pieceData = pieceDataSet[piece];
   imagesize = pieceData.imagesize;
   notes = pieceData.animation["score"];
