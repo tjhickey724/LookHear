@@ -321,18 +321,23 @@ function switchPiece(piece){
 
   console.log("The selected piece is "+piece)
 
-  var theFiles = {
-    master: {name:'/pieces/'+piece+'/videos/Master.mp4',type:'video/mp4'},
-    altus: {name:'/pieces/'+piece+'/videos/Altus.mp4',type:'video/mp4'},
-    cantus: {name:'/pieces/'+piece+'/videos/Cantus.mp4',type:'video/mp4'},
-    tenor: {name:'/pieces/'+piece+'/videos/Tenor.mp4',type:'video/mp4'},
-    bassus: {name:'/pieces/'+piece+'/videos/Bassus.mp4',type:'video/mp4'},
-    mastermenu: {name:'/pieces/'+piece+'/videos/MasterMenu.mp4',type:'video/mp4'},
-   }
+  var theFiles = [
+    {id:'score', name:'/pieces/'+piece+'/videos/Master.mp4',type:'video/mp4'},
+    {id:'altus', name:'/pieces/'+piece+'/videos/Altus.mp4',type:'video/mp4'},
+    {id:'cantus', name:'/pieces/'+piece+'/videos/Cantus.mp4',type:'video/mp4'},
+    {id:'tenor', name:'/pieces/'+piece+'/videos/Tenor.mp4',type:'video/mp4'},
+    {id:'bassus', name:'/pieces/'+piece+'/videos/Bassus.mp4',type:'video/mp4'},
+    {id:'mastermenu', name:'/pieces/'+piece+'/videos/MasterMenu.mp4',type:'video/mp4'},
+  ]
 
 
 
-  var playSelectedFile = function (file, id){
+  var playSelectedFile = function (fileNum){
+
+    var fileObj = theFiles[fileNum]
+    file = fileObj.name
+    id = fileObj.id
+    console.log('preloading file '+file)
     console.dir(file)
     console.log(id)
     var type = file.type
@@ -341,13 +346,19 @@ function switchPiece(piece){
     var videoNode = document.getElementById(vid)
     console.dir(['videoNode',videoNode])
     var req = new XMLHttpRequest();
-    req.open('GET', file.name, true);
+    req.open('GET', file, true);
     req.responseType = 'blob';
     req.onload = function() {
        if (this.status === 200) {
           var videoBlob = this.response;
           var vid = URL.createObjectURL(videoBlob); // IE10+
           videoNode.src = vid;
+
+          console.log('just loaded '+file)
+          if (fileNum<5){playSelectedFile(fileNum+1)} else {
+            document.getElementById('startVideos').disabled = false
+            console.log('disabled = '+ document.getElementById('startVideos').disabled)
+          }
        }
     }
     req.onerror = function() {
@@ -356,12 +367,17 @@ function switchPiece(piece){
     return videoNode
   }
 
+/*
   playSelectedFile(theFiles.master,'score')
   playSelectedFile(theFiles.cantus,'cantus')
   playSelectedFile(theFiles.altus,'altus')
   playSelectedFile(theFiles.tenor,'tenor')
   playSelectedFile(theFiles.bassus,'bassus')
   playSelectedFile(theFiles.mastermenu,'mastermenu')
+*/
+
+    playSelectedFile(0)
+
 
   /*
   $("#score-source").attr("src","pieces/"+piece+"/videos/Master.mp4");
@@ -382,7 +398,7 @@ function switchPiece(piece){
 
   switchVideo("score");
   switchPart("score");
-  video.play();
+  //video.play();
   $("input[type='range']").val(0);
   partModel.currentTime=0;
   partModel.timeOffset = pieceData.timeOffsets.score;
@@ -394,7 +410,7 @@ function switchPiece(piece){
   startTime = new Date();
   startTime = startTime.getTime();
   partModel.startTime = startTime;
-  playLoop();
+  //playLoop();
   //pauseApp();
   //drawImage(thePartCanvas.getContext("2d"));
 
@@ -583,6 +599,21 @@ $('input[type="range"]').rangeslider({
 
 
 document.addEventListener("keydown",keydownListener);
+
+var startButton = document.getElementById('startVideos')
+startButton.addEventListener('click',function(event){
+  if (startButton.innerHTML.trim()=='Start'){
+    startButton.innerHTML = 'Stop'
+    video.currentTime = 0
+    partModel.startTime= new Date()
+    startApp('mastermenu')
+  } else {
+    running=false;
+    video.currentTime = 0
+    video.pause();
+    startButton.innerHTML = 'Start'
+  }
+})
 
 var myLayout = $('div#container').layout();
 myLayout.sizePane("west","40%");
