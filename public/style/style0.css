@@ -17,9 +17,11 @@ html, body {
   _width:		700px; /* min-width for IE6 */
 }
 
+/*
 .pane {
-  display:	none; /* will appear when layout inits */
+  display:	none;
 }
+*/
 
 .slider, #timeSlider{
     width:100%
