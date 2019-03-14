@@ -9,6 +9,7 @@ var lookhearRouter = require('./routes/lookhear');
 var videodemoRouter = require('./routes/videodemo');
 var multivideodemoRouter = require('./routes/multivideodemo');
 var usersRouter = require('./routes/users');
+var animatepageRouter = require('./routes/animatepage');
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use('/lookhear', lookhearRouter);
 app.use('/videodemo', videodemoRouter);
 app.use('/multivideodemo', multivideodemoRouter);
 app.use('/users', usersRouter);
+app.use('/animatepage', animatepageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
