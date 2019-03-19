@@ -306,6 +306,9 @@ function changePiece(){
 function switchPiece(piece){
   document.getElementById('startVideos').innerHTML = "Start"
   document.getElementById('startVideos').disabled = true
+  document.getElementById("content").style.display = "none"; // Hide content for loading videos
+  document.getElementById("loadSpin").style.display = "flex"; // Activate loading screen (unhide)
+  document.getElementById("loadSpin2").style.display = "block"; // Activate loading screen bottom
   //video.stop()
   //running = false
   pieceData = pieceDataSet[piece];
@@ -362,6 +365,9 @@ function switchPiece(piece){
           if (fileNum<5){playSelectedFile(fileNum+1)} else {
             document.getElementById('startVideos').disabled = false
             console.log('disabled = '+ document.getElementById('startVideos').disabled)
+            document.getElementById("loadSpin2").style.display = "none"; // Videos done loading, hide loading screen
+            document.getElementById("loadSpin").style.display = "none"; // Videos done loading, rehide loading screen
+            document.getElementById("content").style.display = "flex"; // Reveal content, videos done loading
           }
        }
     }
