@@ -26,3 +26,21 @@ html, body {
 .slider, #timeSlider{
     width:100%
 }
+
+/*
+  START UPPER STYLE
+  Styling for drop menus, instructions, and greeting
+*/
+
+
+#thePiece {
+  display: inline;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #FBEEC1;
+}
+#thePiece select:focus {
+  outline: 0;
+}
+
+/* END UPPER STYLE */
