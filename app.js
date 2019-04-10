@@ -13,6 +13,22 @@ var animatepageRouter = require('./routes/animatepage');
 
 var app = express();
 
+// Configuration of database
+
+let dbConfig = require('./app/config/mongodb.config.js');
+let mongoose = require('mongoose');
+
+mongoose.Promise = global.Promise;
+
+// Connection to database
+
+mongoose.connect(dbConfig.url).then(() => {
+  console.log("Successfully connected to MongoDB.");
+}).catch(err => {
+  console.log('Could not connect to MongoDB.');
+  process.exit();
+})
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
