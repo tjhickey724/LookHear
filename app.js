@@ -1,21 +1,14 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var lookhearRouter = require('./routes/lookhear');
-var videodemoRouter = require('./routes/videodemo');
-var multivideodemoRouter = require('./routes/multivideodemo');
-var usersRouter = require('./routes/users');
-var animatepageRouter = require('./routes/animatepage');
-
-var app = express();
+let app = express();
 
 // Configuration of database
 
-let dbConfig = require('./app/config/mongodb.config.js');
+let dbConfig = require('./config/mongodb.config.js');
 let mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
@@ -38,7 +31,20 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// to handle all static routes
 app.use(express.static(path.join(__dirname, 'public')));
+
+let indexRouter = require('./routes/index');
+let lookhearRouter = require('./routes/lookhear');
+let videodemoRouter = require('./routes/videodemo');
+let multivideodemoRouter = require('./routes/multivideodemo');
+let usersRouter = require('./routes/users');
+let animatepageRouter = require('./routes/animatepage');
+let piecesRouter = require('./routes/pieces.routes');
+let formRouter = require('./routes/form');
+
+let piecesController = require('./controllers/piecesController');
 
 app.use('/', lookhearRouter);
 app.use('/lookhear', lookhearRouter);
@@ -46,6 +52,11 @@ app.use('/videodemo', videodemoRouter);
 app.use('/multivideodemo', multivideodemoRouter);
 app.use('/users', usersRouter);
 app.use('/animatepage', animatepageRouter);
+app.use('/pieces', piecesRouter);
+app.use('/form', formRouter);
+
+app.get('/pieces/all',piecesController.findAll);
+app.post('/pieces/create',piecesController.create);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
