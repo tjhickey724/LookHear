@@ -16,6 +16,12 @@ router.get('/uploadform', (req,res) => {
   res.render('fileupload', { title: 'Upload Page'});
 });
 
+router.get('/pieces/all', piecesController.findAll);
+
+router.post('/pieces/create', piecesController.create);
+
+router.delete('/pieces/:pieceId', piecesController.delete);
+
 router.use(fileUpload());
 
 router.post('/upload', function(req, res) {
