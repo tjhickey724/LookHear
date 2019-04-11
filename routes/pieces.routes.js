@@ -3,9 +3,19 @@ let express = require('express');
 let router = express.Router();
 
 let path = require('path')
-let pieces = require('../controllers/piecesController.js');
+let piecesController = require('../controllers/piecesController.js');
 
-router.use(express.static(path.join(__dirname, '../public')));
+//router.use(express.static(path.join(__dirname, '../public')));
+
+router.get('/', (req,res) => {
+  res.sendFile('/form.html');
+});
+
+router.get('/all', piecesController.findAll);
+
+router.post('/create', piecesController.create);
+
+router.delete('/:pieceId', piecesController.delete);
 
   // Save a piece to MongoDB
   //router.post('/pieces/create', pieces.create);

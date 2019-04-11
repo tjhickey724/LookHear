@@ -44,8 +44,6 @@ let animatepageRouter = require('./routes/animatepage');
 let piecesRouter = require('./routes/pieces.routes');
 let formRouter = require('./routes/form');
 
-let piecesController = require('./controllers/piecesController');
-
 app.use('/', lookhearRouter);
 app.use('/lookhear', lookhearRouter);
 app.use('/videodemo', videodemoRouter);
@@ -55,8 +53,11 @@ app.use('/animatepage', animatepageRouter);
 app.use('/pieces', piecesRouter);
 app.use('/form', formRouter);
 
-app.get('/pieces/all',piecesController.findAll);
-app.post('/pieces/create',piecesController.create);
+// Piece actions
+
+//app.get('/pieces/all',piecesController.findAll);
+//app.post('/pieces/create',piecesController.create);
+//app.delete('/pieces/delete/:pieceId',piecesController.delete);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
