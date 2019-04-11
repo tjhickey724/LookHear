@@ -38,6 +38,19 @@ exports.findAll = (req, res) =>  {
     });
 };
 
+// Find piece by id
+exports.find = (req,res) => {
+  console.log("Finding piece with id: " + req.params.pieceId);
+  Piece.findById(req.params.pieceId)
+  .then(piece => {
+    res.send(piece);
+  }).catch(err => {
+    res.status(500).send({
+      message: "piece not found with id " + req.params.pieceId
+    });
+  });
+};
+
 // Delete a piece
 exports.delete = (req,res) => {
   Piece.findByIdAndRemove(req.params.pieceId)
