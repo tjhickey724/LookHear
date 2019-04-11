@@ -7,7 +7,10 @@ exports.create = (req,res) => {
   console.log("Creating a new piece");
   let newpiece = new Piece({
     owner: req.body.owner,
-    title: req.body.title
+    title: req.body.title,
+    composer: req.body.composer,
+    description: req.body.description,
+    parts: req.body.parts
   });
 
   // Save a piece in the MongoDB

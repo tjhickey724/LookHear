@@ -12,7 +12,10 @@ $( document ).ready(function() {
       // PREPARE FORM DATA
       let fData = {
         title : $("#title").val(),
-        owner :  $("#owner").val()
+        owner :  $("#owner").val(),
+        description : $("#description").val(),
+        composer :  $("#composer").val(),
+        parts : $("#parts").val()
       }
 
       console.log('Finished form Data');
@@ -28,7 +31,7 @@ $( document ).ready(function() {
       success : function(piece) {
         $("#postResultDiv").html("<p>" +
           "Post Successfully! <br>" +
-          "--> " + piece.title + " " + piece.owner + "</p>");
+          "--> " + piece.title + " " + piece.owner + " " + piece.composer + " " + piece.parts + "</p>");
       },
       error : function(e) {
         alert("Error!")
