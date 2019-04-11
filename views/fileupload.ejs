@@ -6,7 +6,12 @@
       method='post'
       encType="multipart/form-data">
         <input type="file" name="sampleFile" />
-        <input type="text" name="partName" />
+        <select name="partName" id="partName">
+          <% let partsSplit = pieceParts.split(","); %>
+          <% for(var i = 0; i< partsSplit.length; i++) {%>
+            <option value=<%= partsSplit[i] %>><%= partsSplit[i] %></option>
+          <% } %>
+        </select>
         <input type='submit' value='Upload!' />
     </form>
     <ul class="piece">
