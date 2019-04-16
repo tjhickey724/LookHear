@@ -32,6 +32,7 @@ $( document ).ready(function() {
         $("#postResultDiv").html("<p>" +
           "Post Successfully! <br>" +
           "--> " + piece.title + " " + piece.owner + " " + piece.composer + " " + piece.parts + "</p>");
+        window.location = piece._id;
       },
       error : function(e) {
         alert("Error!")

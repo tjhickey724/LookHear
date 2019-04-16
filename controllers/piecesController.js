@@ -19,15 +19,14 @@ exports.create = (req,res) => {
   newpiece.save()
   .then( data => {
     res.send(data);
+    // Create a new directory for the piece in the public folder
+    fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id), { recursive: true }, (err) => {
+    if (err) throw err;
+    });
   }).catch(err => {
     res.status(500).send({
       message: err.message
     });
-  });
-
-  // Create a new directory for the piece in the public folder
-  fs.mkdir(path.join(__dirname, '../public/' + newpiece.id), { recursive: true }, (err) => {
-  if (err) throw err;
   });
 };
 

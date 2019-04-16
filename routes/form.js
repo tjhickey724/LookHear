@@ -37,7 +37,7 @@ router.post('/upload', function(req, res) {
   let files = [].concat(req.files.file);
   let partNames = [].concat(req.body.partName);
   for(let x = 0; x < files.length; x++){
-    files[x].mv(path.join(__dirname, '../public/' + uploadId + '/' + partNames[x]), function(err) {
+    files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/' + partNames[x]), function(err) {
       if (err)
         return res.status(500).send(err);
       res.send('Files uploaded!');
