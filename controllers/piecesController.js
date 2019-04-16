@@ -1,6 +1,8 @@
 // This controller js file contains methods for executing the URL requests for pieces
 
 const Piece = require('../models/pieces.model.js');
+let fs = require('fs');
+let path = require('path');
 
 exports.create = (req,res) => {
   // Create a piece
@@ -21,6 +23,11 @@ exports.create = (req,res) => {
     res.status(500).send({
       message: err.message
     });
+  });
+
+  // Create a new directory for the piece in the public folder
+  fs.mkdir(path.join(__dirname, '../public/' + newpiece.id), { recursive: true }, (err) => {
+  if (err) throw err;
   });
 };
 

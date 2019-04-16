@@ -32,18 +32,17 @@ router.post('/upload', function(req, res) {
   if (Object.keys(req.files).length == 0) {
     return res.status(400).send('No files were uploaded.');
   }
+  let uploadId = req.body.pieceId;
 
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  let sampleFile = req.files.sampleFile;
-  let partName = req.body.partName;
-
-  // Use the mv() method to place the file somewhere on your server
-  console.log('Sample file found: ' + sampleFile);
-  sampleFile.mv(path.join(__dirname, '../public/' + partName), function(err) {
-    if (err)
-      return res.status(500).send(err);
-    res.send('File uploaded!');
-  });
+  let files = [].concat(req.files.file);
+  let partNames = [].concat(req.body.partName);
+  for(let x = 0; x < files.length; x++){
+    files[x].mv(path.join(__dirname, '../public/' + uploadId + '/' + partNames[x]), function(err) {
+      if (err)
+        return res.status(500).send(err);
+      res.send('Files uploaded!');
+    });
+  }
 });
 
 router.get('/:pieceId', (req,res) => {
@@ -59,8 +58,9 @@ router.get('/:pieceId', (req,res) => {
     let currTitle = currPiece[0].title;
     let currOwner = currPiece[0].owner;
     let currParts = currPiece[0].parts;
+    let currPieceId = currPiece[0].id;
     console.log(currTitle);
-    res.render('fileupload', { pieceTitle : currTitle, pieceOwner : currOwner, pieceParts : currParts });
+    res.render('fileupload', { pieceTitle : currTitle, pieceOwner : currOwner, pieceParts : currParts, pieceId : currPieceId });
   })
   .catch(err => {
     console.error(err)

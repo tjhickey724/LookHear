@@ -5,13 +5,18 @@
       action='/form/upload'
       method='post'
       encType="multipart/form-data">
-        <input type="file" name="sampleFile" />
-        <select name="partName" id="partName">
-          <% let partsSplit = pieceParts.split(","); %>
-          <% for(var i = 0; i< partsSplit.length; i++) {%>
-            <option value=<%= partsSplit[i] %>><%= partsSplit[i] %></option>
-          <% } %>
-        </select>
+        <% let partsSplit = pieceParts.split(","); %>
+        <% for(let i = 0; i < partsSplit.length; i++) {%>
+          <input type="file" name="file" />
+          <select name="partName" id="partName">
+            <% partsSplit = pieceParts.split(","); %>
+            <% for(let j = 0; j< partsSplit.length; j++) {%>
+              <option value=<%= partsSplit[j] %>><%= partsSplit[j] %></option>
+            <% } %>
+          </select>
+          <br>
+        <% } %>
+        <input type="radio" style="display: none" name="pieceId" id="pieceId" value=<%= pieceId %> checked></radio>
         <input type='submit' value='Upload!' />
     </form>
     <ul class="piece">
