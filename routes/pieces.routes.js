@@ -19,4 +19,6 @@ router.delete('/:pieceId', piecesController.delete);
 
 router.get('/:pieceId', piecesController.find);
 
+router.put('/:pieceId', piecesController.update);
+
 module.exports = router;

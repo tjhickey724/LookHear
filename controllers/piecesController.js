@@ -23,6 +23,12 @@ exports.create = (req,res) => {
     fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id), { recursive: true }, (err) => {
     if (err) throw err;
     });
+    fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id + '/media'), { recursive: true }, (err) => {
+    if (err) throw err;
+    });
+    fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id + '/animations'), { recursive: true }, (err) => {
+    if (err) throw err;
+    });
   }).catch(err => {
     res.status(500).send({
       message: err.message
@@ -78,3 +84,32 @@ exports.delete = (req,res) => {
     });
   });
 };
+
+// Update a piece
+exports.update = (req, res) => {
+    // Find piece and update it
+    const doc = {
+      owner: req.body.owner,
+      title: req.body.title,
+      composer: req.body.composer,
+      description: req.body.description,
+      parts: req.body.parts
+    };
+    Piece.update({_id: req.params.pieceId}, doc, function(err, raw) {
+      if (err) {
+        return res.status(404).send({
+          message: "Piece not found with id " + req.params.pieceId
+        });
+      }
+      res.send(raw);
+    }).catch(err => {
+      if(err.kind === 'ObjectId') {
+          return res.status(404).send({
+              message: "Piece not found with id " + req.params.pieceId
+          });
+      }
+      return res.status(500).send({
+          message: "Error updating piece with id " + req.params.pieceId
+      });
+    });
+  };
