@@ -1,0 +1,237 @@
+<html>
+<head>
+	<title>Animation Page</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="This is the animation page of the LookHear Music App">
+  <meta name="author" content="Sarah Mead and Timothy Hickey">
+  <!-- link rel="icon" href="https://v4-alpha.getbootstrap.com/favicon.ico" -->
+
+	<link type="text/css" rel="stylesheet" href="/style/layout-default.css">
+
+	<style type="text/css">
+
+  /*
+    COLOR SCHEME USED
+    Natural and Earthy from https://vismo.co/blog/website-color-schemes
+    #8D8741 Brown-Green
+    #659DBD Medium Blue
+    #DAAD86 Light Brown
+    #BC986A Dark Brown
+    #FBEEC1 Pale Brown
+  */
+
+	html, body {
+		background:	#666;
+		width:		100%;
+		height:		100%;
+		padding:	0;
+		margin:		0;
+		overflow:	auto; /* when page gets too small */
+	}
+	#container {
+		background:	#999;
+		height:		100%;
+		margin:		0 auto;
+		width:		100%;
+		max-width:	2900px;
+		min-width:	70px;
+		_width:		700px; /* min-width for IE6 */
+	}
+	.pane {
+		display:	none; /* will appear when layout inits */
+
+  /*
+    START CONTROL PANEL STYLE
+    Styling for control panel buttons
+    on bottom of screen such as play
+    record, and time slider
+  */
+
+  .slider, #timeSlider{
+      width:100%
+    }
+	}
+  .control-panel > button {
+      margin: 1px 1px 1px 1px;
+      background-color: #FBEEC1;
+      border: solid black 1px;
+      display: inline-block;
+      font-size: 12px;
+      border-radius: 10%;
+      cursor: pointer;
+      -webkit-transition-duration: 0.4s;
+      transition-duration: 0.4s;
+  }
+  .control-panel > input {
+    border-radius: 10%;
+    cursor: pointer;
+    background-color: #FBEEC1;
+    outline: none;
+  }
+  .control-panel button:hover {
+    background-color: #BC986A;
+  }
+  .control-panel button:focus {
+    outline: 0;
+  }
+	.control-box {
+		padding: 10px 3px 3px 1px;
+		position: fixed;
+		width: 98%;
+		background-color: #BC986A;
+		border-radius: 2.5%;
+	}
+
+  /* END CONTROL PANEL STYLE */
+
+  /*
+    START UPPER STYLE
+    Styling for drop menus, instructions, and greeting
+  */
+
+  #helpbox, #dropMenu {
+    width: 25%;
+    float: left;
+  }
+  #welcomeText {
+    float: left;
+    width: 50%;
+  }
+  #helpbox p {
+    font-size: 12px;
+    align-items: center;
+  }
+  #dropMenu select {
+    width: 45%;
+    display: inline;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #FBEEC1;
+  }
+  #dropMenu select:focus {
+    outline: 0;
+  }
+
+  /* END UPPER STYLE */
+	</style>
+
+	<link type="text/css" rel="stylesheet" href="../style/musicapp5.css">
+
+
+	<script type="text/javascript" src="../js/jquery.js"></script>
+	<script type="text/javascript" src="../js/jquery-ui.js"></script>
+	<script type="text/javascript" src="../js/jquery.layout.js"></script>
+	<script type="text/javascript" src="../js2/layoutsave.js"></script>
+<!--
+  <script src="pieces/ortoMotet/animations/altus.js"></script>
+  <script src="pieces/ortoMotet/animations/cantus.js"></script>
+  <script src="pieces/ortoMotet/animations/bassus.js"></script>
+  <script src="pieces/ortoMotet/animations/tenor.js"></script>
+  <script src="pieces/ortoMotet/animations/score.js"></script>
+-->
+
+	<script type="text/javascript">
+
+	$(document).ready(function(){
+		$('#container').layout();
+	});
+
+	</script>
+	<script src="../lib/rangeslider.js"></script>
+	<script src=<%= "../userpieces/" + pieceId + "/animations/altus.js" %>></script>
+  <script src=<%= "../userpieces/" + pieceId + "/animations/cantus.js" %>></script>
+  <script src=<%= "../userpieces/" + pieceId + "/animations/bassus.js" %>></script>
+  <script src=<%= "../userpieces/" + pieceId + "/animations/tenor.js" %>></script>
+  <script src=<%= "../userpieces/" + pieceId + "/animations/score.js" %>></script>
+
+  <style href="../stylesheets/scoreapp.css"></style>
+  <style href="../stylesheets/rangeslider.css"></style>
+
+
+</head>
+<body>
+
+<!-- START NORTH PANEL -->
+<div id="container" class="flex-container">
+  <div class="pane ui-layout-north">
+    <div id="helpbox">
+      <div style="width: 98%; font-size: 14px; float: left; display: inline">
+        <p>
+          Press Q to record<br>
+          Press W to reset<br>
+          Press Z to add a note<br>
+					Press X to pause<br>
+        </p>
+      </div>
+    </div>
+
+    <div id="welcomeText">
+    <h1>Animation Page for: <%= pieceTitle %></h1>
+    <p id="description">This is the page to animate the notation for LookHear.<p>
+    </div>
+
+    <div id="dropMenu">
+      <select id="part">
+        <option></option>
+        <option>cantus</option>
+        <option>altus</option>
+        <option>tenor</option>
+        <option>bassus</option>
+        <option>score</option>
+      </select>
+    </div>
+</div>
+<!-- END NORTH PANEL -->
+
+<!-- START CENTER PANEL -->
+
+	<div class="pane ui-layout-center">
+	<div class="control-box">
+  <div class="control-panel control-panel-buttons">
+    <button id="playback" class="control-panel control-panel-speed-buttons">Playback</button>
+      <h4 style="display: inline; margin-right: 5px;">Speed: </h4>
+      <input type="text" id="playbackRate" value="1.0" size="5">
+      <h4 style="display: inline; margin-right: 5px;">Box Size: </h4>
+      <input type="text" id="boxHeight" value="15" size="5">
+      <button id="initPart" class="control-panel control-panel-speed-buttons">Init Part/Change Options</button>
+      <button id="save" style="float: right">Save Animation/Upload</button>
+      </div>
+
+        <input
+          id="timeSlider"
+          type="range"
+          min="0"                    // default 0
+          max="100"                  // default 100
+          step="1"                   // default 1
+          value="0"                 // default min + (max-min)/2
+          data-orientation="vertical" // default horizontal
+      >
+		</div>
+      <audio src=<%= "../userpieces/" + pieceId + "/media/Master.mp4" %> id="audio" name="audio">
+          <p>Your browser does not support the <code>audio</code> element.</p>
+      </audio>
+			<br><br><br><br>
+      <div id="partdiv" class="part nopadding">
+        <img id="source" class="noPadding2" src="" width="0" height="0" alt="part">
+        <canvas id="thePart" width="10%"></canvas>
+      </div>
+			<div id="pieceId" style="visibility: hidden;"><%= pieceId %></div>
+       <script src="../lib/scoreappmodule.js"></script>
+      <script>
+          // Initialize a new plugin instance for all
+          // e.g. $('input[type="range"]') elements.
+          //$('input[type="range"]').rangeslider();
+
+          // Destroy all plugin instances created from the
+          // e.g. $('input[type="range"]') elements.
+          //$('input[type="range"]').rangeslider('destroy');
+
+          // Update all rangeslider instances for all
+          // e.g. $('input[type="range"]') elements.
+          // Usefull if you changed some attributes e.g. `min` or `max` etc.
+          //$('input[type="range"]').rangeslider('update', true);
+      </script>
+  </div>
+</body>
+</html>
