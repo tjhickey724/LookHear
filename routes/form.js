@@ -5,6 +5,7 @@ let router = express.Router();
 let path = require('path')
 let piecesController = require('../controllers/piecesController.js');
 const Piece = require('../models/pieces.model.js');
+let animateRouter = require('./animatepage.js');
 
 
 router.use(express.static(path.join(__dirname, '../../public')));
@@ -38,19 +39,21 @@ router.post('/upload', function(req, res) {
 
   let files = [].concat(req.files.file);
   let partNames = [].concat(req.body.partName);
+  let partIncrement = 0;
   for(let x = 0; x < files.length; x+=2){
-    files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[x/2] + '.mp4'), function(err) {
-      if (err)
-        return res.status(500).send(err);
+    files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[(partIncrement)] + '.mp4'), function(err) {
+      if (err) { console.dir(error); throw error; }
     });
+    partIncrement++;
   }
+  partIncrement = 0;
   for(let y = 1; y < files.length; y+=2){
-    files[y].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[y/2] + '.jpg'), function(err) {
-      if (err)
-        return res.status(500).send(err);
-      res.send('Files uploaded!');
+    files[y].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[(partIncrement)] + '.jpg'), function(err) {
+      if (err) { console.dir(error); throw error; }
     });
+    partIncrement++;
   }
+  res.redirect('../animatepage/' + uploadId);
 });
 
 router.get('/:pieceId', (req,res) => {
