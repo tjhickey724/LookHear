@@ -16,6 +16,7 @@ router.get('/:pieceId', function(req, res, next) {
     _id: pieceId
   })
   .then(doc => {
+    console.dir(doc)
     let currPiece = doc;
     let currTitle = currPiece[0].title;
     let currOwner = currPiece[0].owner;

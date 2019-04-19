@@ -35,22 +35,22 @@ router.post('/upload', function(req, res) {
     return res.status(400).send('No files were uploaded.');
   }
   let uploadId = req.body.pieceId;
-
+// ADD A TRY/CATCH SO YOU DONT KILL SYSTEM
   let files = [].concat(req.files.file);
   let partNames = [].concat(req.body.partName);
   for(let x = 0; x < files.length; x+=2){
     files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[x/2] + '.mp4'), function(err) {
-      if (err)
-        return res.status(500).send(err);
+      if (err) {console.log("ERROR"); console.dir(err); throw err}
     });
   }
   for(let y = 1; y < files.length; y+=2){
     files[y].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[y/2] + '.jpg'), function(err) {
-      if (err)
-        return res.status(500).send(err);
-      res.send('Files uploaded!');
+      if (err) {console.log("ERROR"); console.dir(err); throw err}
+
+
     });
   }
+  res.send('Files uploaded!');
 });
 
 router.get('/:pieceId', (req,res) => {
