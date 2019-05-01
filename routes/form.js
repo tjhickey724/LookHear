@@ -36,24 +36,40 @@ router.post('/upload', function(req, res) {
     return res.status(400).send('No files were uploaded.');
   }
   let uploadId = req.body.pieceId;
-
+// ADD A TRY/CATCH SO YOU DONT KILL SYSTEM
   let files = [].concat(req.files.file);
   let partNames = [].concat(req.body.partName);
   let partIncrement = 0;
   for(let x = 0; x < files.length; x+=2){
+<<<<<<< HEAD
     files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[(partIncrement)] + '.mp4'), function(err) {
       if (err) { console.dir(error); throw error; }
+=======
+    files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[x/2] + '.mp4'), function(err) {
+      if (err) {console.log("ERROR"); console.dir(err); throw err}
+>>>>>>> c62672a5992026be3db8f44786c0a373d50bc9e3
     });
     partIncrement++;
   }
   partIncrement = 0;
   for(let y = 1; y < files.length; y+=2){
+<<<<<<< HEAD
     files[y].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[(partIncrement)] + '.jpg'), function(err) {
       if (err) { console.dir(error); throw error; }
+=======
+    files[y].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[y/2] + '.jpg'), function(err) {
+      if (err) {console.log("ERROR"); console.dir(err); throw err}
+
+
+>>>>>>> c62672a5992026be3db8f44786c0a373d50bc9e3
     });
     partIncrement++;
   }
+<<<<<<< HEAD
   res.redirect('../animatepage/' + uploadId);
+=======
+  res.send('Files uploaded!');
+>>>>>>> c62672a5992026be3db8f44786c0a373d50bc9e3
 });
 
 router.get('/:pieceId', (req,res) => {
