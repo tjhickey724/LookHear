@@ -8,7 +8,9 @@
         <% let partsSplit = pieceParts.split(","); %>
         <% for(let i = 0; i < partsSplit.length; i++) {%>
           <input type="file" name="file" />
+          <label for="file"> Upload sheet music in .jpg format</label>
           <input type="file" name="file" />
+          <label for="file"> Upload part video in .mp4 format</label>
           <select name="partName" id="partName">
             <% partsSplit = pieceParts.split(","); %>
             <% for(let j = 0; j< partsSplit.length; j++) {%>
@@ -20,12 +22,16 @@
         <input type="radio" style="display: none" name="pieceId" id="pieceId" value=<%= pieceId %> checked></radio>
         <input type='submit' value='Upload!' />
     </form>
-    <ul class="piece">
-        <li class="piece">
-          <span><%= pieceTitle %></span>
-          <span><%= pieceOwner %></span>
-          <span><%= pieceParts %></span>
-        </li>
-    </ul>
+    <div class="container">
+      <div class="pieceItem">
+        <%= pieceTitle %>
+      </div>
+      <div class="pieceItem">
+        <%= pieceOwner %>
+      </div>
+      <div class="pieceItem">
+        <%= pieceParts %>
+      </div>
+    </div>
   </body>
 </html>

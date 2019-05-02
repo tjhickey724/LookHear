@@ -18,19 +18,6 @@ exports.create = (req,res) => {
   // Save a piece in the MongoDB
   newpiece.save()
   .then( data => {
-<<<<<<< HEAD
-    // Create a new directory for the piece in the public folder
-    fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id), { recursive: true }, (err) => {
-      if (err) { console.dir(error); throw error }
-      });
-      fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id + '/media'), { recursive: true }, (err) => {
-      if (err) { console.dir(error); throw error }
-      });
-      fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id + '/animations'), { recursive: true }, (err) => {
-      if (err) { console.dir(error); throw error }
-    });
-    res.send(data);
-=======
 
     // Create a new directory for the piece in the public folder
     fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id), { recursive: true }, (err) => {
@@ -55,10 +42,9 @@ exports.create = (req,res) => {
             console.log("made animation")
         });
     });
-    
+
     res.send(data);
 
->>>>>>> c62672a5992026be3db8f44786c0a373d50bc9e3
   }).catch(err => {
     res.status(500).send({
       message: err.message

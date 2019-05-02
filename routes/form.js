@@ -39,37 +39,16 @@ router.post('/upload', function(req, res) {
 // ADD A TRY/CATCH SO YOU DONT KILL SYSTEM
   let files = [].concat(req.files.file);
   let partNames = [].concat(req.body.partName);
-  let partIncrement = 0;
-  for(let x = 0; x < files.length; x+=2){
-<<<<<<< HEAD
-    files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[(partIncrement)] + '.mp4'), function(err) {
-      if (err) { console.dir(error); throw error; }
-=======
-    files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[x/2] + '.mp4'), function(err) {
+  partNames = ['altus','cantus'];
+  let partLength = partNames.length;
+  let partOptions = ['.jpg','.mp4'];
+  for(let x = 0; x < files.length; x++){
+    files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[Math.floor(x/partLength)] + partOptions[(x%2)]), function(err) {
+      console.log("saved file to " + '../public/userpieces/' + uploadId + '/media/' + partNames[Math.floor(x/partLength)] + ' ' + (x/partLength) + ' '+ partOptions[(x%2)]);
       if (err) {console.log("ERROR"); console.dir(err); throw err}
->>>>>>> c62672a5992026be3db8f44786c0a373d50bc9e3
     });
-    partIncrement++;
   }
-  partIncrement = 0;
-  for(let y = 1; y < files.length; y+=2){
-<<<<<<< HEAD
-    files[y].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[(partIncrement)] + '.jpg'), function(err) {
-      if (err) { console.dir(error); throw error; }
-=======
-    files[y].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[y/2] + '.jpg'), function(err) {
-      if (err) {console.log("ERROR"); console.dir(err); throw err}
-
-
->>>>>>> c62672a5992026be3db8f44786c0a373d50bc9e3
-    });
-    partIncrement++;
-  }
-<<<<<<< HEAD
-  res.redirect('../animatepage/' + uploadId);
-=======
   res.send('Files uploaded!');
->>>>>>> c62672a5992026be3db8f44786c0a373d50bc9e3
 });
 
 router.get('/:pieceId', (req,res) => {
