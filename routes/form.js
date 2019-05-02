@@ -39,14 +39,17 @@ router.post('/upload', function(req, res) {
 // ADD A TRY/CATCH SO YOU DONT KILL SYSTEM
   let files = [].concat(req.files.file);
   let partNames = [].concat(req.body.partName);
-  partNames = ['altus','cantus'];
-  let partLength = partNames.length;
-  let partOptions = ['.jpg','.mp4'];
-  for(let x = 0; x < files.length; x++){
-    files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[Math.floor(x/partLength)] + partOptions[(x%2)]), function(err) {
-      console.log("saved file to " + '../public/userpieces/' + uploadId + '/media/' + partNames[Math.floor(x/partLength)] + ' ' + (x/partLength) + ' '+ partOptions[(x%2)]);
+  let partIncrement = 0;
+  for(let x = 0; x < files.length; x+=2){
+    files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[partIncrement] + '.jpg'), function(err) {
+      console.log("saved file to " + '../public/userpieces/' + uploadId + '/media/' + partNames[partIncrement] + '.mp4');
       if (err) {console.log("ERROR"); console.dir(err); throw err}
     });
+    files[x+1].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[partIncrement] + '.mp4'), function(err) {
+      console.log("saved file to " + '../public/userpieces/' + uploadId + '/media/' + partNames[partIncrement] + '.mp4');
+      if (err) {console.log("ERROR"); console.dir(err); throw err}
+    });
+    partIncrement = partIncrement + 1;
   }
   res.send('Files uploaded!');
 });
