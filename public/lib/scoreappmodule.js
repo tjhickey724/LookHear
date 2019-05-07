@@ -14,20 +14,24 @@ Somethings are only needed for the Recording
 //PLAYBACK CODE
 console.log("in scoreapp!");
 
-animation={
-  altus:animationAltus,
-  cantus:animationCantus,
-  bassus:animationBassus,
-  tenor:animationTenor,
-  score:animationScore};
+let parts = document.getElementById("saPieceParts").textContent;
+let partsSplit = parts.split(",");
 
-boxSize = {
-  altus:0.12,
-  cantus:0.12,
-  bassus:0.12,
-  tenor:0.12,
-  score:0.23
+animation = {};
+boxSize = {};
+
+for (let j = 0; j < partsSplit.length; j++) {
+  animation[partsSplit[j]] = "animation" + partsSplit[j].charAt(0).toUpperCase() + partsSplit[j].slice(1);
+  boxSize[partsSplit[j]] = 0.12;
 }
+
+imagesize=
+{cantus:{width:2551, height:3450},
+ altus:{width:2549, height:3749},
+ tenor:{width:2549, height:3751},
+ bassus:{width:2548, height:3749},
+ score:{width:1073,height:6548}
+ };
 
 $('input[type="range"]').rangeslider({
   onInit: function() {
@@ -68,14 +72,6 @@ theSlider2 = $('#timeSlider2');
 thePartCanvas =  document.getElementById("thePart");
 thePartCanvas.width = window.innerWidth;
 thePartCanvas.height = window.innerHeight-50;
-
-imagesize=
-{cantus:{width:2551, height:3450},
- altus:{width:2549, height:3749},
- tenor:{width:2549, height:3751},
- bassus:{width:2548, height:3749},
- score:{width:1073,height:6548}
- };
 
 
 initialPartModel = {
@@ -367,7 +363,7 @@ partSelect.change(function(event){
   console.dir(this);
   console.log("selecting part");
   let image = document.getElementById("source");
-  let pieceId = document.getElementById("pieceId").textContent;
+  let pieceId = document.getElementById("saPieceId").textContent;
   image.src= "../userpieces/" + pieceId + "/media/"+(partSelect.val()+".jpg");
   ctx = thePartCanvas.getContext("2d");
   image = document.getElementById("source");

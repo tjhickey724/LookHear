@@ -51,7 +51,7 @@ router.post('/upload', function(req, res) {
     });
     partIncrement = partIncrement + 1;
   }
-  res.send('Files uploaded!');
+  res.redirect('../animatepage/' + uploadId);
 });
 
 router.get('/:pieceId', (req,res) => {

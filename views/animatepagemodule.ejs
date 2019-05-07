@@ -138,11 +138,10 @@
 
 	</script>
 	<script src="../lib/rangeslider.js"></script>
-	<script src=<%= "../userpieces/" + pieceId + "/animations/altus.js" %>></script>
-  <script src=<%= "../userpieces/" + pieceId + "/animations/cantus.js" %>></script>
-  <script src=<%= "../userpieces/" + pieceId + "/animations/bassus.js" %>></script>
-  <script src=<%= "../userpieces/" + pieceId + "/animations/tenor.js" %>></script>
-  <script src=<%= "../userpieces/" + pieceId + "/animations/score.js" %>></script>
+	<% partsSplit = pieceParts.split(","); %>
+	<% for(let j = 0; j< partsSplit.length; j++) {%>
+		<script src=<%= "../userpieces/" + pieceId + "/animations/" + partsSplit[j] + ".js" %>></script>
+	<% } %>
 
   <style href="../stylesheets/scoreapp.css"></style>
   <style href="../stylesheets/rangeslider.css"></style>
@@ -172,6 +171,7 @@
 
     <div id="dropMenu">
 			<select name="partName" id="part">
+				<option value = "Choose Part" selected>Choose Part</option>
 				<% partsSplit = pieceParts.split(","); %>
 				<% for(let j = 0; j< partsSplit.length; j++) {%>
 					<option value=<%= partsSplit[j] %>><%= partsSplit[j] %></option>
@@ -205,7 +205,7 @@
           data-orientation="vertical" // default horizontal
       >
 		</div>
-      <audio src=<%= "../userpieces/" + pieceId + "/media/Master.mp4" %> id="audio" name="audio">
+      <audio src=<%= "../userpieces/" + pieceId + "/media/" + partsSplit[0] + ".mp4" %> id="audio" name="audio">
           <p>Your browser does not support the <code>audio</code> element.</p>
       </audio>
 			<br><br><br><br>
@@ -213,8 +213,12 @@
         <img id="source" class="noPadding2" src="" width="0" height="0" alt="part">
         <canvas id="thePart" width="10%"></canvas>
       </div>
-			<div id="pieceId" style="visibility: hidden;"><%= pieceId %></div>
-       <script src="../lib/scoreappmodule.js"></script>
+
+<!-- Passing information to score app module through div elements -->
+			<div id="saPieceId" style="visibility: hidden;"><%= pieceId %></div>
+			<div id="saPieceParts" style="visibility: hidden;"><%= pieceParts %></div>
+
+			<script src="../lib/scoreappmodule.js"></script>
       <script>
           // Initialize a new plugin instance for all
           // e.g. $('input[type="range"]') elements.
