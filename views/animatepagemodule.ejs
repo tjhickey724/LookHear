@@ -122,7 +122,6 @@
 	<script type="text/javascript" src="../js/jquery.js"></script>
 	<script type="text/javascript" src="../js/jquery-ui.js"></script>
 	<script type="text/javascript" src="../js/jquery.layout.js"></script>
-	<script type="text/javascript" src="../js2/layoutsave.js"></script>
 <!--
   <script src="pieces/ortoMotet/animations/altus.js"></script>
   <script src="pieces/ortoMotet/animations/cantus.js"></script>
@@ -172,14 +171,12 @@
     </div>
 
     <div id="dropMenu">
-      <select id="part">
-        <option></option>
-        <option>cantus</option>
-        <option>altus</option>
-        <option>tenor</option>
-        <option>bassus</option>
-        <option>score</option>
-      </select>
+			<select name="partName" id="part">
+				<% partsSplit = pieceParts.split(","); %>
+				<% for(let j = 0; j< partsSplit.length; j++) {%>
+					<option value=<%= partsSplit[j] %>><%= partsSplit[j] %></option>
+				<% } %>
+			</select>
     </div>
 </div>
 <!-- END NORTH PANEL -->

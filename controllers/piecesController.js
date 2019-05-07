@@ -25,22 +25,37 @@ exports.create = (req,res) => {
           console.dir(err)
           throw err;
         }
-        console.log("making media")
+        console.log("making media folder")
         fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id + '/media'), { recursive: true }, (err) => {
             if (err) {
               console.dir(err)
               throw err;
             }
-            console.log("made media")
+            console.log("made media foler")
         });
-        console.log("making animations")
+        console.log("making animations folder")
         fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id + '/animations'), { recursive: true }, (err) => {
             if (err) {
               console.dir(err)
               throw err;
             }
-            console.log("made animation")
+            console.log("made animation folder")
         });
+        console.log("making dummy animation files")
+        partsSplit = newpiece.parts.split(",")
+        for (let j = 0; j < partsSplit.length; j++) {
+          let firstChar = partsSplit[j].charAt(0).toUpperCase();
+          let capName = firstChar + partsSplit[j].slice(1);
+          let contents = "animation" + capName + " = [];";
+          fs.writeFile(path.join(__dirname, '../public/userpieces/' + newpiece.id + '/animations/') + partsSplit[j] + ".js",contents,(err)=>{
+            if (err) {
+              console.dir(err);
+              throw err;
+            }
+            console.log("made dummy animation file for " + partsSplit[j])
+            console.log("file made at file path: " + path.join(__dirname, '../public/userpieces/' + newpiece.id + '/animations/') + partsSplit[j] + ".js");
+          });
+        }
     });
 
     res.send(data);
