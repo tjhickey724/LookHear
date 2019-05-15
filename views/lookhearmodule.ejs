@@ -1,11 +1,6 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width initial-scale=1 shrink-to-fit=no">
-  <% partsSplit = pieceParts.split(","); %>
-	<% for(let j = 0; j< partsSplit.length; j++) {%>
-		<script src=<%= "../userpieces/" + pieceId + "/animations/" + partsSplit[j] + ".js" %>></script>
-	<% } %>
-
 
  <link type="text/css" rel="stylesheet" href="/style/layout-default.css">
  <link type="text/css" rel="stylesheet" href="/style/style0.css">
@@ -104,30 +99,62 @@
         <i>Bassus:</i> Emily Walhout
       </p>
     </div>
-    <!-- Passing information to score app module through div elements -->
-    <div id="lhPieceId" style="visibility: hidden;"><%= pieceId %></div>
-    <div id="lhPieceParts" style="visibility: hidden;"><%= pieceParts %></div>
-    <div id="lhPieceTitle" style="visibility: hidden;"><%= pieceTitle %></div>
   </div>
   <div class="pane ui-layout-west">
     <div class="video nopadding">
-      <video class="musicvideo noPadding" width="0%" id="altus"></video>
-      <video class="musicvideo noPadding" width="0%" id="score"></video>
-      <video class="musicvideo noPadding" width="0%" id="cantus"></video>
-      <video class="musicvideo noPadding" width="0%" id="tenor"></video>
-      <video class="musicvideo noPadding" width="0%" id="bassus"></video>
-      <video class="musicvideo noPadding" width="0%" id="mastermenu"></video>
+    <!--
+      <% partsSplit = pieceParts.split(","); %>
+      <% for(let j = 0; j< partsSplit.length; j++) {%>
+        <option value=<%= partsSplit[j] %>><%= partsSplit[j] %></option>
+        <video width = "0%" id= <%= partsSplit[j] %> class="musicvideo noPadding">
+             <source id=<%= partsSplit[j] %> + "-source" src= "userpieces/" + <%= pieceId %> + "/media/" + <%= partsSplit[j] %> + '.mp4'>
+        </video>
+      <% } %>
+        <video width = "0%" id= 'score' class="musicvideo noPadding">
+             <source id="score-source" src= 'userpieces/' + <%= pieceId %> + '/media/Master.mp4'>
+        </video>
+        <video width = "0%" id= 'mastermenu' class="musicvideo noPadding">
+           <source id="mastermenu-source" src= 'userpieces/' + <%= pieceId %> + '/media/MasterMenu.mp4'>
+        </video>
+      -->
+      <video   width = "0%" id= 'altus' class="musicvideo noPadding">
+           <source id="altus-source" src= '../userpieces/' + <%= pieceId %> + '/media/MasterMenu.mp4'>
+      </video>
+      <video   width = "0%" id= 'score' class="musicvideo noPadding">
+           <source id="score-source" src= '../userpieces/' + <%= pieceId %> + '/media/Menu.mp4'>
+      </video>
+      <video   width = "0%" id= 'cantus' class="musicvideo noPadding">
+           <source id="cantus-source" src= '../userpieces/' + <%= pieceId %> + '/media/altus.mp4'>
+      </video>
+      <video   width = "0%" id= 'tenor' class="musicvideo noPadding">
+           <source id="tenor-source" src='../userpieces/' + <%= pieceId %> + '/media/cantus.mp4'>
+      </video>
+      <video   width = "0%" id= 'bassus' class="musicvideo noPadding">
+           <source id="bassus-source" src= '../userpieces/' + <%= pieceId %> + '/media/bassus.mp4'>
+      </video>
+      <video   width = "0%" id= 'mastermenu' class="musicvideo noPadding">
+           <source id="mastermenu-source" src= '../userpieces/' + <%= pieceId %> + '/media/tenor.mp4'>
+      </video>
     </div>
   </div>
 </div>
+<!-- Passing information to score app module through div elements -->
+<div id="lhPieceId" style="visibility: hidden;"><%= pieceId %></div>
+<div id="lhPieceParts" style="visibility: hidden;"><%= pieceParts %></div>
+<div id="lhPieceTitle" style="visibility: hidden;"><%= pieceTitle %></div>
+
 </div>
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/jquery-ui.js"></script>
-<script type="text/javascript" src="js/jquery.layout.js"></script>
-<script src="lib/animations.js"></script>
-<script src="lib/rangeslider.js"></script>
-<script src="javascripts/multivideodemo.js"></script>
-<script src="lib/musicapp4module.js"></script>
-<script type="text/javascript" src="js/startCode.js"></script>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<script type="text/javascript" src="../js/jquery.layout.js"></script>
+<% partsSplit = pieceParts.split(","); %>
+<% for(let j = 0; j< partsSplit.length; j++) {%>
+  <script src=<%= "../userpieces/" + pieceId + "/animations/" + partsSplit[j] + ".js" %>></script>
+<% } %>
+<script src="../lib/animations.js"></script>
+<script src="../lib/rangeslider.js"></script>
+<script src="../javascripts/multivideodemo.js"></script>
+<script src="../lib/musicapp4module.js"></script>
+<script type="text/javascript" src="../js/startCode.js"></script>
 </body>
 </html>

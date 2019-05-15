@@ -15,6 +15,7 @@ Somethings are only needed for the Recording
 console.log("in scoreapp!");
 
 let parts = document.getElementById("saPieceParts").textContent;
+let pieceId = document.getElementById("saPieceId").textContent;
 let partsSplit = parts.split(",");
 
 animation = {};
@@ -400,6 +401,24 @@ saveButton.click(function(event){
   alert("Cut/Paste the following code "+
      "into the appropriate file in the animations folder:\n\n" +
     JSON.stringify(notes));
+
+  let currPart;
+  for (let j = 0; j < partsSplit.length; j++) {
+    if (partSelect.val() == partsSplit[j]) {
+      currPart = partsSplit[j];
+    }
+  }
+  let firstChar = currPart.charAt(0).toUpperCase();
+  let capName = firstChar + currPart.slice(1);
+  let contents = "animation" + capName + " =" + JSON.stringify(notes) + ";";
+  fs.writeFile(path.join(__dirname, '../public/userpieces/' + pieceId + '/animations/') + currPart + "2.js",contents,(err)=>{
+    if (err) {
+      console.dir(err);
+      throw err;
+    }
+      console.log("made dummy animation file for " + currPart)
+      console.log("file made at file path: " + path.join(__dirname, '../public/userpieces/' + pieceId + '/animations/') + currPart + "2.js");
+  });
 })
 
 initPartButton = $("#initPart");

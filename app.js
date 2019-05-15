@@ -44,7 +44,6 @@ let animatepageRouter = require('./routes/animatepage');
 let piecesRouter = require('./routes/pieces.routes');
 let formRouter = require('./routes/form');
 
-app.use('/', lookhearRouter);
 app.use('/lookhear', lookhearRouter);
 app.use('/videodemo', videodemoRouter);
 app.use('/multivideodemo', multivideodemoRouter);

@@ -23,13 +23,9 @@ function updateModel(){
   p = partModel.position;
   n1 = partModel.notes[p]
   n2 = partModel.notes[p+1]
-  if (!n2 || !n2.time) {
-    return;
-  }
 
   if (partModel.notes.length<p) {
     running=false;
-
     return;
   }
 
@@ -38,9 +34,6 @@ function updateModel(){
     partModel.position = p;
     n1 = partModel.notes[p]
     n2 = partModel.notes[p+1]
-    if (!n2 || !n2.time) {
-      return;
-    }
   }
   while (c < n1.time & p>1){
     p=p-1;
@@ -186,8 +179,11 @@ function selectThePart(part){
   console.dir(this);
   console.log("selecting part");
   var image = document.getElementById("source");
-  piece = partModel.piece; //$("#thePiece").val();
-
+  piece = $("#thePiece").val();
+  if (piece=="Select a piece") {
+    alert("Please select a piece!");
+    return;
+  }
   image.src= "pieces/"+piece+"/images/"+(part+".jpg");
   ctx = thePartCanvas.getContext("2d");
   image = document.getElementById("source");
@@ -241,7 +237,6 @@ function switchPart(part){
 function switchVideo(part){
 $(".musicvideo").attr("width","0%");
 $("#"+part).attr("width","100%");
-console.log("switching to '"+part+"'")
  video = document.getElementById(part);
 }
 
@@ -304,17 +299,9 @@ function changePiece(){
 }
 
 function switchPiece(piece){
-  document.getElementById('startVideos').innerHTML = "Start"
-  document.getElementById('startVideos').disabled = true
-  document.getElementById("content").style.display = "none"; // Hide content for loading videos
-  document.getElementById("loadSpin").style.display = "flex"; // Activate loading screen (unhide)
-  document.getElementById("loadSpin2").style.display = "block"; // Activate loading screen bottom
-  //video.stop()
-  //running = false
   pieceData = pieceDataSet[piece];
   imagesize = pieceData.imagesize;
   notes = pieceData.animation["score"];
-  partModel.piece=piece;
   partModel.timeOffsets = pieceData.timeOffsets;
 
   partModel.notes = notes;
@@ -326,89 +313,23 @@ function switchPiece(piece){
   $(".description").hide();
   $("."+piece).show();
 
-  console.log("The selected piece is "+piece)
-
-  var theFiles = [
-    {id:'score', name:'/pieces/'+piece+'/videos/Master.mp4',type:'video/mp4'},
-    {id:'altus', name:'/pieces/'+piece+'/videos/Altus.mp4',type:'video/mp4'},
-    {id:'cantus', name:'/pieces/'+piece+'/videos/Cantus.mp4',type:'video/mp4'},
-    {id:'tenor', name:'/pieces/'+piece+'/videos/Tenor.mp4',type:'video/mp4'},
-    {id:'bassus', name:'/pieces/'+piece+'/videos/Bassus.mp4',type:'video/mp4'},
-    {id:'mastermenu', name:'/pieces/'+piece+'/videos/MasterMenu.mp4',type:'video/mp4'},
-  ]
-
-
-
-  var playSelectedFile = function (fileNum){
-
-    var fileObj = theFiles[fileNum]
-    file = fileObj.name
-    id = fileObj.id
-    console.log('preloading file '+file)
-    console.dir(file)
-    console.log(id)
-    var type = file.type
-    var vid = id //file.name.substring(file.name.lastIndexOf("/")+1,file.name.indexOf("."))
-    console.log(`vid=${vid} type=${type} file=${JSON.stringify(file)}`)
-    var videoNode = document.getElementById(vid)
-    console.dir(['videoNode',videoNode])
-    var req = new XMLHttpRequest();
-    req.open('GET', file, true);
-    req.responseType = 'blob';
-    req.onload = function() {
-       if (this.status === 200) {
-          var videoBlob = this.response;
-          var vid = URL.createObjectURL(videoBlob); // IE10+
-          videoNode.src = vid;
-
-          console.log('just loaded '+file)
-          if (fileNum<5){playSelectedFile(fileNum+1)} else {
-            document.getElementById('startVideos').disabled = false
-            console.log('disabled = '+ document.getElementById('startVideos').disabled)
-            document.getElementById("loadSpin2").style.display = "none"; // Videos done loading, hide loading screen
-            document.getElementById("loadSpin").style.display = "none"; // Videos done loading, rehide loading screen
-            document.getElementById("content").style.display = "flex"; // Reveal content, videos done loading
-          }
-       }
-    }
-    req.onerror = function() {
-    }
-    req.send();
-    return videoNode
-  }
-
-/*
-  playSelectedFile(theFiles.master,'score')
-  playSelectedFile(theFiles.cantus,'cantus')
-  playSelectedFile(theFiles.altus,'altus')
-  playSelectedFile(theFiles.tenor,'tenor')
-  playSelectedFile(theFiles.bassus,'bassus')
-  playSelectedFile(theFiles.mastermenu,'mastermenu')
-*/
-
-    playSelectedFile(0)
-
-
-  /*
   $("#score-source").attr("src","pieces/"+piece+"/videos/Master.mp4");
   $("#cantus-source").attr("src","pieces/"+piece+"/videos/Cantus.mp4");
   $("#altus-source").attr("src","pieces/"+piece+"/videos/Altus.mp4");
   $("#tenor-source").attr("src","pieces/"+piece+"/videos/Tenor.mp4");
   $("#bassus-source").attr("src","pieces/"+piece+"/videos/Bassus.mp4");
   $("#mastermenu-source").attr("src","pieces/"+piece+"/videos/MasterMenu.mp4");
-  *
   var video = document.getElementById('cantus'); video.load();video.play();video.muted=true
   var video = document.getElementById('altus'); video.load();video.play();video.muted=true
   var video = document.getElementById('tenor'); video.load();video.play();video.muted=true
   var video = document.getElementById('bassus'); video.load();video.play();video.muted=true
   var video = document.getElementById('score'); video.load();video.play();video.muted=false
   var video = document.getElementById('mastermenu'); video.load();video.play();video.muted=true
-  */
 
 
   switchVideo("score");
   switchPart("score");
-  //video.play();
+  video.play();
   $("input[type='range']").val(0);
   partModel.currentTime=0;
   partModel.timeOffset = pieceData.timeOffsets.score;
@@ -420,10 +341,7 @@ function switchPiece(piece){
   startTime = new Date();
   startTime = startTime.getTime();
   partModel.startTime = startTime;
-  //playLoop();
-  //pauseApp();
-  //drawImage(thePartCanvas.getContext("2d"));
-
+  playLoop();
 }
 
 
@@ -609,21 +527,6 @@ $('input[type="range"]').rangeslider({
 
 
 document.addEventListener("keydown",keydownListener);
-
-var startButton = document.getElementById('startVideos')
-startButton.addEventListener('click',function(event){
-  if (startButton.innerHTML.trim()=='Start'){
-    startButton.innerHTML = 'Stop'
-    video.currentTime = 0
-    partModel.startTime= new Date()
-    startApp('mastermenu')
-  } else {
-    running=false;
-    video.currentTime = 0
-    video.pause();
-    startButton.innerHTML = 'Start'
-  }
-})
 
 var myLayout = $('div#container').layout();
 myLayout.sizePane("west","40%");

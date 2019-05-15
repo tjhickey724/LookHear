@@ -6,6 +6,39 @@ This version works with musicapp4.html
 //rate CODE
 console.log("in scoreapp!");
 
+// First, we create the pieceDataSet
+// this stores all the info which is unique to that piece
+// the name, boxSize for each part, size for each part, animation for each part
+pieceDataSet = {
+  imagesize:{
+     cantus:{width:2551, height:3450},
+     altus:{width:2549, height:3749},
+      tenor:{width:2549, height:3751},
+     bassus:{width:2548, height:3749},
+     score:{width:1073, height:6548},
+     mastermenu:{width:1073, height:6548},
+  },
+  timeOffsets:{},
+  boxSize:{},
+  animation:{}
+};
+let theFiles = [];
+
+pieceDataSet["pieceName"] = document.getElementById("lhPieceTitle").textContent;
+let partsStr = document.getElementById("lhPieceParts").textContent;
+let pieceIdStr = document.getElementById("lhPieceId").textContent;
+let partsSplit = partsStr.split(",");
+for (let j = 0; j < partsSplit.length; j++) {
+  pieceDataSet.timeOffsets[partsSplit[j]] = 0;
+  pieceDataSet.boxSize[partsSplit[j]] = 0.12;
+  pieceDataSet.animation[partsSplit[j]] = "animation" + partsSplit[j].charAt(0).toUpperCase() + partsSplit[j].slice(1);
+
+  theFiles.push({
+    "id": partsSplit[j],
+    "name": '../userpieces/'+pieceIdStr + '/media/' + partsSplit[j] + '.mp4',
+    "type":'video/mp4'
+  });
+}
 
 function updateModel(){
 // update the boxX and yOffset fields of the partModel based on the time
@@ -101,29 +134,8 @@ function drawPart(){
 function drawImage(ctx){
   image = document.getElementById("source");
   var w = thePartCanvas.width+0.0;
-  var thePart = theCurrentPart;
-  var aspect = 1.0;
-  switch (thePart){
-    case "altus":
-        aspect = imagesize.altus.height/imagesize.altus.width;
-        break;
-    case "cantus":
-        aspect = imagesize.cantus.height/imagesize.cantus.width;
-        break;
-    case "tenor":
-        aspect = imagesize.tenor.height/imagesize.tenor.width;
-        break;
-    case "bassus":
-        aspect = imagesize.bassus.height/imagesize.bassus.width;
-        break;
-    case "score":
-        aspect = imagesize.score.height/imagesize.score.width;
-        break;
-    case "mastermenu":
-        aspect = imagesize.mastermenu.height/imagesize.mastermenu.width;
-        break;
-    default: console.log("unknown part: '"+ thePart+"'");
-  }
+  let thePart = theCurrentPart;
+  aspect = imagesize[theCurrentPart.toString()].height/imagesize[theCurrentPart.toString()].width;
   ctx.drawImage(image,
     partModel.xOffset*w,
     partModel.yOffset*w,
@@ -194,7 +206,7 @@ function selectThePart(part){
   ctx.drawImage(image,0,0,window.innerWidth,window.innerWidth*4/3);
 
   drawPart();
-
+  console.log(part);
   notes = pieceDataSet.animation[part];
   partModel.notes =notes;
   maxtime = notes[notes.length-1].time;
@@ -311,7 +323,7 @@ function switchPiece(piece){
   document.getElementById("loadSpin2").style.display = "block"; // Activate loading screen bottom
   //video.stop()
   //running = false
-  pieceData = pieceDataSet[piece];
+  pieceData = pieceDataSet;
   console.log(pieceDataSet);
   imagesize = pieceDataSet.imagesize;
   notes = pieceDataSet.animation[partsSplit[0]];
@@ -355,7 +367,7 @@ function switchPiece(piece){
           videoNode.src = vid;
 
           console.log('just loaded '+file)
-          if (fileNum<5){playSelectedFile(fileNum+1)} else {
+          if (fileNum<partsSplit.length-1){playSelectedFile(fileNum+1)} else {
             document.getElementById('startVideos').disabled = false
             console.log('disabled = '+ document.getElementById('startVideos').disabled)
             document.getElementById("loadSpin2").style.display = "none"; // Videos done loading, hide loading screen
@@ -399,12 +411,12 @@ function switchPiece(piece){
   */
 
 
-  switchVideo("score");
-  switchPart("score");
+  switchVideo(partsSplit[0]);
+  switchPart(partsSplit[0]);
   //video.play();
   $("input[type='range']").val(0);
   partModel.currentTime=0;
-  partModel.timeOffset = pieceData.timeOffsets.score;
+  partModel.timeOffset = pieceDataSet.timeOffsets[partsSplit[0]];
   console.log("setting the video time!"+video.currentTime+" "+partModel.currentTime/1000.0)
   video.currentTime = partModel.currentTime/1000.0;
   running=true;
@@ -435,42 +447,6 @@ function startApp(part){
   running=true;
   playLoop();
 
-}
-
-
-
-// First, we create the pieceDataSet
-// this stores all the info which is unique to that piece
-// the name, boxSize for each part, size for each part, animation for each part
-pieceDataSet = {
-  imagesize:{
-     cantus:{width:2551, height:3450},
-     altus:{width:2549, height:3749},
-      tenor:{width:2549, height:3751},
-     bassus:{width:2548, height:3749},
-     score:{width:1073, height:6548},
-     mastermenu:{width:1073, height:6548},
-  },
-  timeOffsets:{},
-  boxSize:{},
-  animation:{}
-};
-let theFiles = [];
-
-pieceDataSet["pieceName"] = document.getElementById("lhPieceTitle").textContent;
-let partsStr = document.getElementById("lhPieceParts").textContent;
-let pieceIdStr = document.getElementById("lhPieceId").textContent;
-let partsSplit = partsStr.split(",");
-for (let j = 0; j < partsSplit.length; j++) {
-  pieceDataSet.timeOffsets[partsSplit[j]] = 0;
-  pieceDataSet.boxSize[partsSplit[j]] = 0.12;
-  pieceDataSet.animation[partsSplit[j]] = "animation" + partsSplit[j].charAt(0).toUpperCase() + partsSplit[j].slice(1);
-
-  theFiles.push({
-    "id": partsSplit[j],
-    "name": '/userpieces/'+pieceIdStr + '/media/' + partsSplit[j] + '.mp4',
-    "type":'video/mp4'
-  });
 }
 
 /*
@@ -504,7 +480,7 @@ pieceDataSet = {
     imagesize:{
        cantus:{width:2551, height:3450},
        altus:{width:2549, height:3749},
-        tenor:{width:2549, height:3751},
+       tenor:{width:2549, height:3751},
        bassus:{width:2548, height:3749},
        score:{width:1073, height:6548},
        mastermenu:{width:1073, height:6548},
@@ -549,7 +525,7 @@ pieceDataSet = {
 */
 
 
-theCurrentPart = "Score";
+theCurrentPart = partsSplit[0];
 testing = true;
 running = true;
 
