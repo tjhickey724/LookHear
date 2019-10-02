@@ -102,39 +102,13 @@
   </div>
   <div class="pane ui-layout-west">
     <div class="video nopadding">
-    <!--
       <% partsSplit = pieceParts.split(","); %>
       <% for(let j = 0; j< partsSplit.length; j++) {%>
         <option value=<%= partsSplit[j] %>><%= partsSplit[j] %></option>
         <video width = "0%" id= <%= partsSplit[j] %> class="musicvideo noPadding">
-             <source id=<%= partsSplit[j] %> + "-source" src= "userpieces/" + <%= pieceId %> + "/media/" + <%= partsSplit[j] %> + '.mp4'>
+             <source id=<%= partsSplit[j] %> + "-source" src= "../userpieces/" + <%= pieceId %> + "/media/" + <%= partsSplit[j] %> + '.mp4'>
         </video>
       <% } %>
-        <video width = "0%" id= 'score' class="musicvideo noPadding">
-             <source id="score-source" src= 'userpieces/' + <%= pieceId %> + '/media/Master.mp4'>
-        </video>
-        <video width = "0%" id= 'mastermenu' class="musicvideo noPadding">
-           <source id="mastermenu-source" src= 'userpieces/' + <%= pieceId %> + '/media/MasterMenu.mp4'>
-        </video>
-      -->
-      <video   width = "0%" id= 'altus' class="musicvideo noPadding">
-           <source id="altus-source" src= '../userpieces/' + <%= pieceId %> + '/media/MasterMenu.mp4'>
-      </video>
-      <video   width = "0%" id= 'score' class="musicvideo noPadding">
-           <source id="score-source" src= '../userpieces/' + <%= pieceId %> + '/media/Menu.mp4'>
-      </video>
-      <video   width = "0%" id= 'cantus' class="musicvideo noPadding">
-           <source id="cantus-source" src= '../userpieces/' + <%= pieceId %> + '/media/altus.mp4'>
-      </video>
-      <video   width = "0%" id= 'tenor' class="musicvideo noPadding">
-           <source id="tenor-source" src='../userpieces/' + <%= pieceId %> + '/media/cantus.mp4'>
-      </video>
-      <video   width = "0%" id= 'bassus' class="musicvideo noPadding">
-           <source id="bassus-source" src= '../userpieces/' + <%= pieceId %> + '/media/bassus.mp4'>
-      </video>
-      <video   width = "0%" id= 'mastermenu' class="musicvideo noPadding">
-           <source id="mastermenu-source" src= '../userpieces/' + <%= pieceId %> + '/media/tenor.mp4'>
-      </video>
     </div>
   </div>
 </div>
@@ -151,7 +125,7 @@
 <% for(let j = 0; j< partsSplit.length; j++) {%>
   <script src=<%= "../userpieces/" + pieceId + "/animations/" + partsSplit[j] + ".js" %>></script>
 <% } %>
-<script src="../lib/animations.js"></script>
+<script src="../lib/animation2.js"></script>
 <script src="../lib/rangeslider.js"></script>
 <script src="../javascripts/multivideodemo.js"></script>
 <script src="../lib/musicapp4module.js"></script>

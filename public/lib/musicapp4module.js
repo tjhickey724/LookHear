@@ -208,6 +208,8 @@ function selectThePart(part){
   drawPart();
   console.log(part);
   notes = pieceDataSet.animation[part];
+  console.log("Notes");
+  console.log(notes);
   partModel.notes =notes;
   maxtime = notes[notes.length-1].time;
   attributes = {min:0,max:maxtime,step:1}
@@ -382,14 +384,9 @@ function switchPiece(piece){
     return videoNode
   }
 
-/*
-  playSelectedFile(theFiles.master,'score')
-  playSelectedFile(theFiles.cantus,'cantus')
-  playSelectedFile(theFiles.altus,'altus')
-  playSelectedFile(theFiles.tenor,'tenor')
-  playSelectedFile(theFiles.bassus,'bassus')
-  playSelectedFile(theFiles.mastermenu,'mastermenu')
-*/
+  for (let v = 0; v < partsSplit.length; v++) {
+    playSelectedFile(theFiles[partsSplit[v].toString()],partsSplit[v].toString());
+  }
 
     playSelectedFile(0)
 

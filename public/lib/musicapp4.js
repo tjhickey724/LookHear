@@ -15,7 +15,7 @@ function updateModel(){
   totalsecs = Math.floor(c1/1000)
   mins = Math.floor(totalsecs/60)
   secs = totalsecs%60
-  $("#theTime").html(mins+":"+(secs<10?"0":"")+secs)
+  $("#theTime").html(mins+":"+(secs<10?"0":"")+secs)e
   theSlider = $('#timeSlider');
   theSlider.val(c1);
 
