@@ -20,12 +20,13 @@ $( document ).ready(function() {
 
       console.log('Finished form Data');
       console.log('\n' + JSON.stringify(fData));
+      console.log('url= '+  window.location + "/pieces/create")
 
       // DO POST
       $.ajax({
       type : "POST",
       contentType : "application/json",
-      url : window.location + "pieces/create",
+      url : window.location + "/pieces/create",
       data : JSON.stringify(fData),
       dataType : 'json',
       success : function(piece) {

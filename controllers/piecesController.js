@@ -7,18 +7,25 @@ let path = require('path');
 exports.create = (req,res) => {
   // Create a piece
   console.log("Creating a new piece");
-  let newpiece = new Piece({
+
+  let piece = {
     owner: req.body.owner,
     title: req.body.title,
     composer: req.body.composer,
     description: req.body.description,
     parts: req.body.parts
-  });
+  }
 
+  console.log(`piece = ${piece}`)
+
+  let newpiece = new Piece(piece);
+
+
+  console.log('saving newpiece')
   // Save a piece in the MongoDB
   newpiece.save()
   .then( data => {
-
+    console.log("in newpiece.save")
     // Create a new directory for the piece in the public folder
     fs.mkdir(path.join(__dirname, '../public/userpieces/' + newpiece.id), { recursive: true }, (err) => {
         if (err) {
@@ -58,9 +65,11 @@ exports.create = (req,res) => {
         }
     });
 
-    res.send(data);
+    //res.send(data);
+    res.redirect('/form/'+newpiece._id)
 
   }).catch(err => {
+    console.log("whoops!  "+err.message)
     res.status(500).send({
       message: err.message
     });

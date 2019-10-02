@@ -24,7 +24,7 @@ let mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // Connection to database
-
+/*
 const conn = mongoose.createConnection(dbConfig.url);
 
 // Inititate gridFS
@@ -34,6 +34,16 @@ conn.once('open', () => {
   gfs = Grid(conn.db, mongoose.mongo);
   gfs.collection('fs');
 })
+*/
+
+mongoose.connect( dbConfig.url, { useNewUrlParser: true } );
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("we are connected!!!")
+});
+
+
 
 // Create storage engine
 const storage = new GridFSStorage({
@@ -67,7 +77,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // to handle all static routes
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // route GET /uploadvideo
 // Loads from
@@ -149,6 +159,7 @@ let animatepageRouter = require('./routes/animatepage');
 let piecesRouter = require('./routes/pieces.routes');
 let formRouter = require('./routes/form');
 
+//app.use('/', lookhearRouter);
 app.use('/lookhear', lookhearRouter);
 app.use('/videodemo', videodemoRouter);
 app.use('/multivideodemo', multivideodemoRouter);
