@@ -7,7 +7,6 @@ let path = require('path');
 exports.create = (req,res) => {
   // Create a piece
   console.log("Creating a new piece");
-
   let piece = {
     owner: req.body.owner,
     title: req.body.title,
@@ -16,7 +15,8 @@ exports.create = (req,res) => {
     parts: req.body.parts
   }
 
-  console.log(`piece = ${piece}`)
+  console.log(`piece = ${JSON.stringify(piece)}`)
+
 
   let newpiece = new Piece(piece);
 

@@ -7,35 +7,35 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="/js/getpiece.js"></script>
-  <script src="/js/postpiece.js"></script>
+  <scriptz src="/js/getpiece.js"></scriptz>
+  <scriptz src="/js/postpiece.js"></scriptz>
 </head>
 
 <body>
 <div class="container">
 <div class="col-sm-4">
-  <h3>Piece Form</h3>
+  <h3>Piece Form!</h3>
   <div>
-    <form id="pieceForm">
+    <form id="pieceForm" method="post" action="/form/pieces/create">
       <div class="form-group">
       <label for="title">Title:</label>
-      <input type="text" class="form-control" id="title" placeholder="Enter title"/>
+      <input type="text" class="form-control" name="title" id="title" placeholder="Enter title"/>
       </div>
       <div class="form-group">
       <label for="owner">Submitted By:</label>
-      <input type="text" class="form-control" id="owner" placeholder="Enter owner"/>
+      <input type="text" class="form-control" name="owner" id="owner" placeholder="Enter owner"/>
       </div>
       <div class="form-group">
       <label for="composer">Composer:</label>
-      <input type="text" class="form-control" id="composer" placeholder="Enter composer"/>
+      <input type="text" class="form-control" name="composer" id="composer" placeholder="Enter composer"/>
       </div>
       <div class="form-group">
       <label for="description">Description:</label>
-      <input type="text" class="form-control" id="description" placeholder="Enter description"/>
+      <input type="text" class="form-control" name="description" id="description" placeholder="Enter description"/>
       </div>
       <div class="form-group">
       <label for="parts">Parts (please enter in comma separated format: "altus,cantus,tenor,bassus"):</label>
-      <input type="text" class="form-control" id="parts" placeholder="Enter parts"/>
+      <input type="text" class="form-control" name="parts" id="parts" placeholder="Enter parts"/>
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>

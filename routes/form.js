@@ -21,7 +21,10 @@ router.get('/uploadform', (req,res) => {
 
 router.get('/pieces/all', piecesController.findAll);
 
-router.post('/pieces/create', piecesController.create);
+router.post('/pieces/create',
+      (req,res,next) => {console.log('req.body=');
+          console.dir(req.body); next()},
+      piecesController.create);
 
 router.delete('/pieces/:pieceId', piecesController.delete);
 
