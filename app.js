@@ -6,15 +6,11 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const crypto = require('crypto');
 const multer = require('multer');
-const GridFSStorage = require('multer-gridfs-storage')
-const Grid = require('gridfs-stream')
-const methodOverride = require('method-override')
 
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(methodOverride('_method'));
 
 // Configuration of database
 
@@ -23,48 +19,12 @@ let mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-// Connection to database
-/*
-const conn = mongoose.createConnection(dbConfig.url);
-
-// Inititate gridFS
-let gfs;
-
-conn.once('open', () => {
-  gfs = Grid(conn.db, mongoose.mongo);
-  gfs.collection('fs');
-})
-*/
-
 mongoose.connect( dbConfig.url, { useNewUrlParser: true } );
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("we are connected!!!")
 });
-
-
-
-// Create storage engine
-const storage = new GridFSStorage({
-  url: dbConfig.url,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) {
-          return reject(err)
-        }
-        const filename = buf.toString('hex') + path.extname(file.originalname);
-        const fileInfo = {
-          filename: filename,
-          bucketname: 'fs'
-        };
-        resolve(fileInfo);
-      });
-    });
-  }
-});
-const upload = multer({ storage })
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -78,77 +38,6 @@ app.use(cookieParser());
 
 // to handle all static routes
 app.use(express.static(path.join(__dirname, 'public')));
-
-// route GET /uploadvideo
-// Loads from
-app.get('/uploadvideo', (req, res) => {
-  gfs.files.find().toArray((err, files) => {
-    // Check if files
-    if (!files || files.length === 0) {
-      res.render('uploadvideo', {files: false});
-    } else {
-      res.render('uploadvideo', {files: files});
-    }
-  });
-});
-
-// route POST /upload
-// Upload files to DB
-app.post('/upload', upload.single('file'), (req, res) => {
-  res.redirect('uploadvideo');
-});
-
-// route GET /files
-// displays all files in json
-app.get('/files', (req, res) => {
-  gfs.files.find().toArray((err, files) => {
-    // Check if files
-    if (!files || files.length === 0) {
-      return res.status(404).json({
-        err: 'No files exist'
-      });
-    }
-
-    // Files found
-    return res.json(files);
-  });
-});
-
-// route GET /files/:filename
-// displays all files in json
-app.get('/files/:filename', (req, res) => {
-  gfs.files.findOne({ filename: req.params.filename}, (err, file) => {
-    // Check if exists
-    if (!file || file.length === 0) {
-      return res.status(404).json({
-        err: 'No file exists'
-      });
-    }
-
-    // File exists
-
-    // Check if video
-    if (file.contentType === 'video/mp4') {
-      // Read output
-      const readstream = gfs.createReadStream(file.filename);
-      readstream.pipe(res);
-    } else {
-      return res.json(file);
-    }
-  });
-});
-
-// route DELETE /files/:id
-// Delete file
-app.delete('/files/:id', (req, res) => {
-  gfs.remove({ _id: req.params.id, root: 'fs'}, (err, gridStore) => {
-    if (err) {
-      return res.status(404).json({ err: err });
-    }
-
-    res.redirect('/uploadvideo');
-  });
-});
 
 let indexRouter = require('./routes/index');
 let lookhearRouter = require('./routes/lookhear');

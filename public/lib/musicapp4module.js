@@ -341,8 +341,6 @@ function switchPiece(piece){
   $(".description").hide();
   $("."+piece).show();
 
-  console.log("The selected piece is "+piece)
-
   var playSelectedFile = function (fileNum){
 
     let fileObj = theFiles[fileNum]
@@ -372,9 +370,9 @@ function switchPiece(piece){
           if (fileNum<partsSplit.length-1){playSelectedFile(fileNum+1)} else {
             document.getElementById('startVideos').disabled = false
             console.log('disabled = '+ document.getElementById('startVideos').disabled)
-            document.getElementById("loadSpin2").style.display = "none"; // Videos done loading, hide loading screen
-            document.getElementById("loadSpin").style.display = "none"; // Videos done loading, rehide loading screen
-            document.getElementById("content").style.display = "flex"; // Reveal content, videos done loading
+            document.getElementById("loadSpin2").style.display = ""; // Videos done loading, hide loading screen
+            document.getElementById("loadSpin").style.display = ""; // Videos done loading, rehide loading screen
+            document.getElementById("content").style.display = ""; // Reveal content, videos done loading
           }
        }
     }
@@ -385,7 +383,7 @@ function switchPiece(piece){
   }
 
   for (let v = 0; v < partsSplit.length; v++) {
-    playSelectedFile(theFiles[partsSplit[v].toString()],partsSplit[v].toString());
+    playSelectedFile(v);
   }
 
     playSelectedFile(0)

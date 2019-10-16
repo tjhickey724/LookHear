@@ -5,11 +5,7 @@ let router = express.Router();
 let path = require('path')
 let piecesController = require('../controllers/piecesController.js');
 
-//router.use(express.static(path.join(__dirname, '../public')));
-
-router.get('/', (req,res) => {
-  res.sendFile('/form.html');
-});
+router.use(express.static(path.join(__dirname, '../public')));
 
 router.get('/all', piecesController.findAll);
 
