@@ -93,6 +93,6 @@
   var inputNode = document.querySelector('input')
   inputNode.addEventListener('change', playSelectedFiles, false)
 
-  var playButton = document.getElementById('play')
+  var playButton = document.getElementById('start')
   play.addEventListener('click',playSelectedFiles,false)
 })()

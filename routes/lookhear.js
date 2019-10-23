@@ -3,7 +3,7 @@ var router = express.Router();
 let path = require('path')
 const Piece = require('../models/pieces.model.js');
 
-router.use(express.static(path.join(__dirname, '../../public')));
+router.use(express.static(path.join(__dirname, '../../')));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

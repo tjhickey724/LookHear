@@ -101,15 +101,13 @@
     </div>
   </div>
   <div class="pane ui-layout-west">
-    <div class="video nopadding">
       <% partsSplit = pieceParts.split(","); %>
       <% for(let j = 0; j< partsSplit.length; j++) {%>
-        <option value=<%= partsSplit[j] %>><%= partsSplit[j] %></option>
+        <option style="visibility: hidden;" value=<%= partsSplit[j] %>><%= partsSplit[j] %></option>
         <video width = "0%" id= <%= partsSplit[j] %> class="musicvideo noPadding">
              <source id=<%= partsSplit[j] %> + "-source" src= "../userpieces/" + <%= pieceId %> + "/media/" + <%= partsSplit[j] %> + '.mp4'>
         </video>
       <% } %>
-    </div>
   </div>
 </div>
 <!-- Passing information to score app module through div elements -->
@@ -127,7 +125,6 @@
 <% } %>
 <script src="../lib/animation2.js"></script>
 <script src="../lib/rangeslider.js"></script>
-<script src="../javascripts/multivideodemo.js"></script>
 <script src="../lib/musicapp4module.js"></script>
 <script type="text/javascript" src="../js/startCode.js"></script>
 </body>
