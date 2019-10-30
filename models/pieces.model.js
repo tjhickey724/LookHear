@@ -1,5 +1,5 @@
 let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+let Schema = mongoose.schema;
 
 let PieceSchema = new Schema({
     owner: String,
