@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let userSchema = Schema({
+let userSchema = new Schema({
   googleid: String,
   googletoken: String,
   googlename: String,

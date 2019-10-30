@@ -610,7 +610,7 @@ startButton.addEventListener('click',function(event){
     startButton.innerHTML = 'Stop'
     video.currentTime = 0
     partModel.startTime= new Date()
-    startApp('mastermenu')
+    startApp('cantus')
   } else {
     running=false;
     video.currentTime = 0

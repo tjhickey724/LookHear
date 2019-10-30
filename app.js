@@ -47,7 +47,7 @@ db.once('open', function() {
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.set('port', 4000);
+app.set('port', 6500);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -61,9 +61,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Authentication Routes
 
-app.use(session({
+app.use(session(
+  { secret: 'ufiods78432jkls',
+    resave: false,
+    saveUninitialized: false }));
 
-}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -74,7 +76,7 @@ const approvedLogins = []
 // Check for logged in status
 app.use((req, res, next) => {
   res.locals.title = "LookHear"
-  res.locals.loggedIn = False
+  res.locals.loggedIn = false
   if (req.isAuthenticated()){
     res.locals.user = req.user
     res.locals.loggedIn = true
@@ -107,7 +109,7 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'em
 
 app.get('/login/authorized',
   passport.authenticate('google', {
-    successRedirect: '/lookhear',
+    successRedirect: '/',
     failureRedirect: '/loginerror'
   })
 );
@@ -123,7 +125,7 @@ function isLoggedIn(req, res, next){
   }
 }
 
-app.use(isLoggedIn)
+//app.use(isLoggedIn)
 
 // End of Authentication Routes
 
@@ -136,15 +138,16 @@ let animatepageRouter = require('./routes/animatepage');
 let piecesRouter = require('./routes/pieces.routes');
 let formRouter = require('./routes/form');
 
-//app.use('/', lookhearRouter);
+
 app.use('/lookhear', lookhearRouter);
 app.use('/videodemo', videodemoRouter);
 app.use('/multivideodemo', multivideodemoRouter);
 app.use('/users', usersRouter);
 app.use('/animatepage', animatepageRouter);
 app.use('/pieces', piecesRouter);
-app.use('/form', formRouter);
+app.use('/form', isLoggedIn, formRouter);
 
+app.use('/', (req,res)=>{res.render('mainpage')});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
