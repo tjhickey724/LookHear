@@ -9,6 +9,7 @@ const logger = require('morgan');
 session = require('express-session')
 bodyParser = require('body-parser')
 User = require('./models/user.model.js')
+Piece = require('./models/pieces.model.js');
 flash = require('connect-flash')
 
 // End of Authentication Modules
@@ -147,7 +148,16 @@ app.use('/animatepage', animatepageRouter);
 app.use('/pieces', piecesRouter);
 app.use('/form', isLoggedIn, formRouter);
 
-app.use('/', (req,res)=>{res.render('mainpage')});
+app.use('/', (req,res)=> {
+  Piece.find()
+  .then(pieces => {
+      let allPieces = pieces;
+      res.render('mainpage', { pieces: allPieces })
+  }).catch(err => {
+      let allPieces = [];
+      res.render('mainpage', { pieces: allPieces })
+  })
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
