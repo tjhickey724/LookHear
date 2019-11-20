@@ -30,4 +30,28 @@ router.get('/:pieceId', function(req, res, next) {
   })
 });
 
+let fs = require('fs');
+let path = require('path');
+
+router.post('/save',(req,res)=>{
+  console.log('req.body is: ')
+  console.dir(req.body)
+  let notes = JSON.parse(req.body.notes)
+  console.dir(`notes = ${notes}`)
+  res.send(req.body.notes)
+  let contents = "animation" + req.body.part + " = " + req.body.notes;
+  fs.writeFile(path.join(__dirname, '../public/userpieces/' + req.body.pieceId + '/animations/') + req.body.part + ".js",
+              contents,
+              (err)=>{
+                  if (err) {
+                    console.dir(err);
+                    throw err;
+                  }
+                })
+
+
+  // add it to database with a mongoose.insert command ..
+  // or write it to the filesystem ..
+})
+
 module.exports = router;

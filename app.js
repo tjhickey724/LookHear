@@ -26,7 +26,8 @@ configPassport(passport)
 const app = express();
 
 // Middleware
-app.use(bodyParser.json());
+//app.use(bodyParser.json());  // commented out 11/13/2019
+
 
 // Database Configuraiton
 
@@ -147,6 +148,7 @@ app.use('/users', usersRouter);
 app.use('/animatepage', animatepageRouter);
 app.use('/pieces', piecesRouter);
 app.use('/form', isLoggedIn, formRouter);
+
 
 app.use('/', (req,res)=> {
   Piece.find()

@@ -387,6 +387,16 @@ partSelect.change(function(event){
 })
 saveButton = $("#save");
 saveButton.click(function(event){
+  console.log("posting to /saveAnimation")
+  console.dir({notes,pieceId,part:partSelect.val()})
+
+  $.post( "/animatepage/save",
+         {notes:JSON.stringify(notes), pieceId, part:partSelect.val()},
+          "json" )
+   .then(x=>{console.log("in promise:"); console.dir(x)})
+  console.log(`zz=${zz}`)
+  console.dir(zz)
+  return
   zz = localStorage.getItem("archive");
   alert(zz);
   if (zz==null) {
@@ -401,6 +411,7 @@ saveButton.click(function(event){
   alert("Cut/Paste the following code "+
      "into the appropriate file in the animations folder:\n\n" +
     JSON.stringify(notes));
+
 
   let currPart;
   for (let j = 0; j < partsSplit.length; j++) {
