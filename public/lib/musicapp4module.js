@@ -31,7 +31,7 @@ let partsSplit = partsStr.split(",");
 for (let j = 0; j < partsSplit.length; j++) {
   pieceDataSet.timeOffsets[partsSplit[j]] = 0;
   pieceDataSet.boxSize[partsSplit[j]] = 0.12;
-  pieceDataSet.animation[partsSplit[j]] = "animation" + partsSplit[j].charAt(0).toUpperCase() + partsSplit[j].slice(1);
+  pieceDataSet.animation[partsSplit[j]] = eval("animation" + partsSplit[j].charAt(0).toUpperCase() + partsSplit[j].slice(1));
 
   theFiles.push({
     "id": partsSplit[j],
@@ -94,9 +94,10 @@ function updateModel(){
   t = n2.time-n1.time;
   partModel.boxX = (t1*n1.x + t2*n2.x)/t;
   partModel.yOffset = (t1*n1.yoff + t2*n2.yoff)/t;
+
   //console.log("x1="+n1.x+" x2="+n2.x+ "\nc="+c+
-  //            " t1="+t1+" t2="+t2+" t="+t +
-  //            " x="+partModel.boxX+" o="+partModel.yOffset);
+    //          " t1="+t1+" t2="+t2+" t="+t +
+      //        " x="+partModel.boxX+" o="+partModel.yOffset);
 
 }
 
@@ -209,8 +210,12 @@ function selectThePart(part){
   console.log(part);
   notes = pieceDataSet.animation[part];
   console.log("Notes");
+  console.dir(pieceDataSet)
   console.log(notes);
   partModel.notes =notes;
+  console.log('notes=')
+  console.dir(notes)
+  console.log("hmmm")
   maxtime = notes[notes.length-1].time;
   attributes = {min:0,max:maxtime,step:1}
   theSlider = $('#timeSlider');
