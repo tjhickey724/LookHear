@@ -14,6 +14,7 @@ Somethings are only needed for the Recording
 //PLAYBACK CODE
 console.log("in scoreapp!");
 
+// We get our piece id and our piece parts from elements in the view
 let parts = document.getElementById("saPieceParts").textContent;
 let pieceId = document.getElementById("saPieceId").textContent;
 let partsSplit = parts.split(",");
@@ -21,11 +22,15 @@ let partsSplit = parts.split(",");
 animation = {};
 boxSize = {};
 
+// Adds string value of 'animationPart' for key part in animation dictionary
+// Initializes the box size for each part to 0.12
+// TODO: Remove hard coding for box size, possibly look into eliminating lookup
 for (let j = 0; j < partsSplit.length; j++) {
   animation[partsSplit[j]] = "animation" + partsSplit[j].charAt(0).toUpperCase() + partsSplit[j].slice(1);
   boxSize[partsSplit[j]] = 0.12;
 }
 
+// TODO: Remove hard coding of image sizes
 imagesize=
 {cantus:{width:2551, height:3450},
  altus:{width:2549, height:3749},
@@ -70,7 +75,7 @@ theSlider2 = $('#timeSlider2');
 
 //notes =  [{"action":"cursor","time":"0","x":323,"y":250,"yoff":-50},{"action":"cursor","time":"1","x":323,"y":250,"yoff":-50},{"action":"cursor","time":"2100","x":344,"y":250,"yoff":-50},{"action":"cursor","time":"3472","x":374,"y":250,"yoff":-50},{"action":"cursor","time":"3976","x":413,"y":250,"yoff":-50},{"action":"cursor","time":"4953","x":441,"y":250,"yoff":-50},{"action":"cursor","time":"5868","x":463,"y":250,"yoff":-50},{"action":"cursor","time":"6448","x":481,"y":250,"yoff":-50},{"action":"cursor","time":"6996","x":511,"y":250,"yoff":-50},{"action":"cursor","time":"7540","x":538,"y":250,"yoff":-50},{"action":"cursor","time":"7992","x":560,"y":250,"yoff":-50},{"action":"cursor","time":"8696","x":590,"y":250,"yoff":-50},{"action":"cursor","time":"9008","x":615,"y":250,"yoff":-50},{"action":"cursor","time":"9480","x":648,"y":250,"yoff":-50},{"action":"cursor","time":"9928","x":666,"y":250,"yoff":-50},{"action":"cursor","time":"10316","x":694,"y":250,"yoff":-50},{"action":"cursor","time":"10760","x":719,"y":250,"yoff":-50},{"action":"cursor","time":"11212","x":745,"y":250,"yoff":-50},{"action":"cursor","time":"11764","x":776,"y":250,"yoff":-50},{"action":"cursor","time":"12720","x":798,"y":250,"yoff":-50}];
 
-thePartCanvas =  document.getElementById("thePart");
+thePartCanvas = document.getElementById("thePart");
 thePartCanvas.width = window.innerWidth;
 thePartCanvas.height = window.innerHeight-50;
 
@@ -95,12 +100,7 @@ initialPartModel = {
 // {"action":"cursor","time":"0","x":355,"y":250,"yoff":92}
 
 partModel = Object.assign({},initialPartModel);
-//partModel.boxHeight = Math.round(partModel.boxHeight/100.0*thePartCanvas.height);
-//partModel.boxWidth  = Math.round(partModel.boxWidth /100.0*thePartCanvas.width);
-
 audio = document.getElementsByTagName("audio")[0];
-//audio.playbackRate=0.5;
-//audio.play();
 
 
 
