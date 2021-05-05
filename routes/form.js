@@ -30,10 +30,12 @@ router.delete('/pieces/:pieceId', piecesController.delete);
 
 router.put('/pieces/:pieceId', piecesController.update);
 
-router.use(fileUpload());
+//router.use(fileUpload());
 
 router.post('/upload', function(req, res) {
   console.log('In upload');
+  //console.dir(req)
+  console.log('*********')
   console.dir(req.files);
   if (Object.keys(req.files).length == 0) {
     return res.status(400).send('No files were uploaded.');
@@ -45,7 +47,7 @@ router.post('/upload', function(req, res) {
   let partIncrement = 0;
   for(let x = 0; x < files.length; x+=2){
     files[x].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[partIncrement] + '.jpg'), function(err) {
-      console.log("saved file to " + '../public/userpieces/' + uploadId + '/media/' + partNames[partIncrement] + '.mp4');
+      console.log("saved file to " + '../public/userpieces/' + uploadId + '/media/' + partNames[partIncrement] + '.jpg');
       if (err) {console.log("ERROR"); console.dir(err); throw err}
     });
     files[x+1].mv(path.join(__dirname, '../public/userpieces/' + uploadId + '/media/' + partNames[partIncrement] + '.mp4'), function(err) {

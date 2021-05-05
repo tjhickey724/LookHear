@@ -1,5 +1,6 @@
 <html>
   <body>
+    <h1>Upload Form</h1>
     <form ref='uploadForm'
       id='uploadForm'
       action='/form/upload'
@@ -8,15 +9,17 @@
         <% let partsSplit = pieceParts.split(","); %>
         <% for(let i = 0; i < partsSplit.length; i++) {%>
           <input type="file" name="file" />
-          <label for="file"> Upload sheet music in .jpg format</label>
+          <label for="file"> Upload sheet music in .jpg format</label><br>
           <input type="file" name="file" />
-          <label for="file"> Upload part video in .mp4 format</label>
+          <label for="file"> Upload part video in .mp4 format</label><br>
           <select name="partName" id="partName">
             <% partsSplit = pieceParts.split(","); %>
             <% for(let j = 0; j< partsSplit.length; j++) {%>
-              <option value=<%= partsSplit[j] %>><%= partsSplit[j] %></option>
+              <option value=<%= partsSplit[j] %> <% if (i==j){%> selected <% }%>>
+                <%= partsSplit[j] %>
+              </option>
             <% } %>
-          </select>
+          </select><br><br>
           <br>
         <% } %>
         <input type="radio" style="display: none" name="pieceId" id="pieceId" value=<%= pieceId %> checked></radio>

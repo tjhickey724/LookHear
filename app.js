@@ -6,8 +6,9 @@ const logger = require('morgan');
 
 // Authentication Modules
 
-session = require('express-session')
-bodyParser = require('body-parser')
+const session = require('express-session')
+const bodyParser = require('body-parser')
+const fileUpload = require('express-fileupload');
 User = require('./models/user.model.js')
 Piece = require('./models/pieces.model.js');
 flash = require('connect-flash')
@@ -25,9 +26,14 @@ configPassport(passport)
 
 const app = express();
 
-// Middleware
-//app.use(bodyParser.json());  // commented out 11/13/2019
+app.use(fileUpload({
+    createParentPath: true
+}));
 
+
+// Middleware
+app.use(bodyParser.json());  // commented out 11/13/2019
+app.use(bodyParser.urlencoded({extended: true}))
 
 // Database Configuraiton
 
@@ -71,9 +77,10 @@ app.use(session(
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(bodyParser.urlencoded({ extended: false }));
 
-const approvedLogins = []
+
+
+const approvedLogins = ["tjhickey@brandeis.edu"]
 
 // Check for logged in status
 app.use((req, res, next) => {
@@ -147,9 +154,11 @@ app.use('/multivideodemo', multivideodemoRouter);
 app.use('/users', usersRouter);
 app.use('/animatepage', animatepageRouter);
 app.use('/pieces', piecesRouter);
-app.use('/form', isLoggedIn, formRouter);
+app.use('/form', formRouter);
 
-
+app.use('/lookhear2', (req,res) => {
+  res.render('lookhear')
+})
 app.use('/', (req,res)=> {
   Piece.find()
   .then(pieces => {

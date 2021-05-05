@@ -52,32 +52,38 @@ class Player {
   * @param parts
   *        Parts of the piece set by the user when uploaded into db
   */
-  constructor(id, parts, pieceDataSet, initialPartModel) {
+
+  constructor (id, parts, pieceDataSet, initialPartModel) {
     // Currently, the parts are a comma separated string 'Altus,Cantus,Bassus' and thus must be split
     // TODO: When user creates a piece, parts are not based on a single string
     this.id = id
-    this.parts = parts.split(",");
-    this.currentPart = $("#part").val();
-    this.aspect = 1.0
-    this.audio = document.getElementsByTagName("audio")[0];
-    this.partModel = Object.assign({}, initialPartModel)
-    this.video = document.getElementsByTagName("video")[0];
-    this.pauseTime = 0;
-    this.paused = false;
+    this.parts = parts.split(","); //in piece
+    this.currentPart = $("#part").val(); // in player
+    this.aspect = 1.0 // in piece
+    this.audio = document.getElementsByTagName("audio")[0]; //move to where needed ...
+    this.partModel = Object.assign({}, initialPartModel) // the piece
+    this.video = document.getElementsByTagName("video")[0]; //move to where needed
+    this.pauseTime = 0; //player
+    this.paused = false; //player
 
-    this.pieceDataSet = pieceDataSet
+    this.pieceDataSet = pieceDataSet //piece
 
 
     // Init slider
     //$("#theTime").html(mins+":"+(secs(<10?"0":"")+secs));
-    this.slider = $("#timeSlider");
+    this.slider = $("#timeSlger");
 
+    // move to where needed ... startpart code
     this.partCanvas = document.getElementById("thePart");
     this.partImage = document.getElementById("source");
     this.partImage.src = "../userpieces/" + this.id + "/media/"+this.currentPart+".jpg";
-    this.running = true;
+
+    this.running = true; // player
+    //this.playloop.bind(this)
+
   }
 
+  // move to Piece class
   initFiles() {
     this.theFiles = [];
 
@@ -85,7 +91,8 @@ class Player {
     for (let j = 0; j < this.parts.length; j++) {
       this.pieceDataSet.timeOffsets[this.parts[j]] = 0;
       this.pieceDataSet.boxSize[this.parts[j]] = 0.12;
-      this.pieceDataSet.animation[this.parts[j]] = eval("animation" + this.parts[j].charAt(0).toUpperCase() + this.parts[j].slice(1));
+      this.pieceDataSet.animation[this.parts[j]] =
+      [{"action":"cursor","time":"0","x":0.10959885386819485,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"0","x":0.10959885386819485,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"4304","x":0.10744985673352435,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"5391","x":0.1174785100286533,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"6614","x":0.1353868194842407,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"6931","x":0.1489971346704871,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"7248","x":0.16260744985673353,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"8134","x":0.17478510028653296,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"9279","x":0.19269340974212035,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"9569","x":0.20558739255014327,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"9806","x":0.22206303724928367,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"10096","x":0.2349570200573066,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"11264","x":0.2492836676217765,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"11925","x":0.2600286532951289,"y":0.2,"yoff":0.0375358166189112}] // eval("animation" + this.parts[j].charAt(0).toUpperCase() + this.parts[j].slice(1));
 
       this.theFiles.push({
         "id": this.parts[j],
@@ -96,10 +103,12 @@ class Player {
   }
 
   playLoop(){
+    console.log('this2=',this)
+    console.dir(this)
     if (!this.running) { return; }
     this.drawPart(this.partCanvas.getContext("2d"));
     this.updateModel();
-    window.requestAnimationFrame(playLoop);
+    window.requestAnimationFrame(() => this.playLoop());
   }
 
   startApp(part){
@@ -121,20 +130,20 @@ class Player {
   updateModel() {
 
     // Our current time is the time elapsed between the model's start time and the current time
-    currTime = (new Date()).getTime() - this.partModel.startTime;
-    currTimeWithOff = currTime - this.partModel.timeOffset;
+    let currTime = (new Date()).getTime() - this.partModel.startTime;
+    let currTimeWithOff = currTime - this.partModel.timeOffset;
 
-    totalSecs = Math.floor(currTime/1000);
-    mins = Math.floor(totalSecs/60);
-    secs = totalSecs % 60;
+    let totalSecs = Math.floor(currTime/1000);
+    let mins = Math.floor(totalSecs/60);
+    let secs = totalSecs % 60;
 
     //$("#theTime").html(mins+":"+(secs(<10?"0":"")+secs));
     this.slider.val(currTime);
 
     // From our part model, get our current position and notes
-    currPosition = this.partModel.position;
-    currNote = this.partModel.notes[currPosition]
-    nextNote = this.partModel.notes[currPosition+1]
+    let currPosition = this.partModel.position;
+    let currNote = this.partModel.notes[currPosition]
+    let nextNote = this.partModel.notes[currPosition+1]
 
     // When our elapsed time is greater than our next note's maximum time, we proceed to the next note
     while (currTime > nextNote.time) {
@@ -160,17 +169,17 @@ class Player {
     }
 
     // Check for seeing if we are on the last note, end if we are
-    if (currentPosition == this.partModel.notes.length-1) {
+    if (currPosition == this.partModel.notes.length-1) {
       this.running = false;
       return
     }
 
     // Given our current time, update our part model
-    partModel.currentTime = currTime;
+    this.partModel.currentTime = currTime;
 
-    t2 = currTime - currNote.time;
-    t1 = nextNote.time - currTime;
-    t = nextNote.time - currNote.time;
+    let t2 = currTime - currNote.time;
+    let t1 = nextNote.time - currTime;
+    let t = nextNote.time - currNote.time;
 
     // We updat eour offsets with the average of the two note times for smooth transition
     this.partModel.boxX = (t1*currNote.x + t2*nextNote.x)/t;
@@ -340,6 +349,7 @@ class Player {
     let req = new XMLHttpRequest();
     req.open('GET', file, true);
     req.responseType = 'blob';
+    let psf = this.playSelectedFile
     req.onload = function() {
        if (this.status === 200) {
           var videoBlob = this.response;
@@ -351,7 +361,9 @@ class Player {
 
           console.log('just loaded '+file)
           console.log(parts)
-          if (fileNum<(parts.length-1)){this.playSelectedFile(fileNum+1)} else {
+          console.log('this1=',this)
+          console.dir(this)
+          if (fileNum<(parts.length-1)){psf(fileNum+1)} else {
             document.getElementById('startVideos').disabled = false
             console.log('disabled = '+ document.getElementById('startVideos').disabled)
             document.getElementById("loadSpin2").style.display = ""; // Videos done loading, hide loading screen
