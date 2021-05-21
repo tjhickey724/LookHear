@@ -1,12 +1,10 @@
 /*
-Next changes --
-Add eventhandler for when the screen size changes...
-Make the distances be percentages of the image width
-This will scale easily as the screen size changes.
-We won't always see the full length of the document but we will
-always see the full width...
+ scoreappmodule.js
 
-Somethings are only needed for the Recording
+ this is the javascript that controls the animatepagemodule.ejs page
+
+ it has a lot of hardcoded constants which need to be improved.
+ 
 
 */
 
@@ -394,8 +392,8 @@ saveButton.click(function(event){
          {notes:JSON.stringify(notes), pieceId, part:partSelect.val()},
           "json" )
    .then(x=>{console.log("in promise:"); console.dir(x)})
-  console.log(`zz=${zz}`)
-  console.dir(zz)
+  //console.log(`zz=${zz}`)
+  //console.dir(zz)
   return
   zz = localStorage.getItem("archive");
   alert(zz);

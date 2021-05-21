@@ -2,6 +2,11 @@
 <head>
 	<title>Animation Page</title>
 
+	<!--
+		THIS IS AN ARCHIVED PAGE AND NO LONGER USED
+		IT IS THE ORIGINAL NON-DB VERSION
+	-->
+
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="This is the animation page of the LookHear Music App">
   <meta name="author" content="Sarah Mead and Timothy Hickey">
@@ -206,7 +211,9 @@
       <h4 style="display: inline; margin-right: 5px;">Box Size: </h4>
       <input type="text" id="boxHeight" value="15" size="5">
       <button id="initPart" class="control-panel control-panel-speed-buttons">Init Part/Change Options</button>
-      <button id="save" style="float: right">Save Animation/Upload</button>
+      <button id="save"
+			        onclick="saveAnimation()"
+			        style="float: right">Save Animation/Upload</button>
       </div>
 
         <input

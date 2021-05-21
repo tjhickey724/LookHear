@@ -1,4 +1,15 @@
 /*
+scoreapp.js
+
+THIS IS THE ARCHIVED VERSION.
+IT WAS FOR THE NON-DB IMPLEMENTATION
+
+GO TO SCOREAPPMODULE.JS FOR THE VERSION REPLACING THIS
+
+This is the javascript that runs the animatepage.ejs interactions
+
+We need to document this better!
+
 Next changes --
 Add eventhandler for when the screen size changes...
 Make the distances be percentages of the image width
@@ -14,12 +25,17 @@ Somethings are only needed for the Recording
 //PLAYBACK CODE
 console.log("in scoreapp!");
 
+// TODO I have to load in these using the router...
+// also this is hard coded and won't work with the general model
+
 animation={
   altus:animationAltus,
   cantus:animationCantus,
   bassus:animationBassus,
   tenor:animationTenor,
   score:animationScore};
+
+// TODO this is also hardcoded and should be stored in the database
 
 boxSize = {
   altus:0.12,

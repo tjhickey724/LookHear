@@ -123,10 +123,23 @@
 <% for(let j = 0; j< partsSplit.length; j++) {%>
   <script src=<%= "../userpieces/" + pieceId + "/animations/" + partsSplit[j] + ".js" %>></script>
 <% } %>
-<scriptzz src="../lib/animation2.js"></scriptzz>
+<script>
+console.log("reading the animations")
+console.log('cantus')
+console.log(animationcantus)
+console.log('altus')
+console.log(animationaltus)
+</script>
+
 <script src="../lib/rangeslider.js"></script>
-<scriptzz src="../lib/musicapp4module.js"></script>
+
 <script src="../lib/player.js"></script>
+
+<!-- OLD Scripts
+<script src="../lib/animation2.js"></script>
+<script src="../lib/musicapp4module.js"></script>
 <script type="text/javascript" src="../js/startCode.js"></script>
+-->
+
 </body>
 </html>

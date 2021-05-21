@@ -23,6 +23,10 @@ const initialPartModel = {
   nextNote:{}, // the next note to process
 };
 
+// TODO
+// These are all hardwired for one of the pieces,
+// we need to loa the actual size dynamically when the
+// piece is selected and the image is loaded into the canvas
 const pieceDataSet = {
   imagesize:{
      cantus:{width:2551, height:3450},
@@ -91,8 +95,15 @@ class Player {
     for (let j = 0; j < this.parts.length; j++) {
       this.pieceDataSet.timeOffsets[this.parts[j]] = 0;
       this.pieceDataSet.boxSize[this.parts[j]] = 0.12;
-      this.pieceDataSet.animation[this.parts[j]] =
-      [{"action":"cursor","time":"0","x":0.10959885386819485,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"0","x":0.10959885386819485,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"4304","x":0.10744985673352435,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"5391","x":0.1174785100286533,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"6614","x":0.1353868194842407,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"6931","x":0.1489971346704871,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"7248","x":0.16260744985673353,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"8134","x":0.17478510028653296,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"9279","x":0.19269340974212035,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"9569","x":0.20558739255014327,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"9806","x":0.22206303724928367,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"10096","x":0.2349570200573066,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"11264","x":0.2492836676217765,"y":0.2,"yoff":0.0375358166189112},{"action":"cursor","time":"11925","x":0.2600286532951289,"y":0.2,"yoff":0.0375358166189112}] // eval("animation" + this.parts[j].charAt(0).toUpperCase() + this.parts[j].slice(1));
+      // we need to read get this with a POST call
+      if (this.parts[j]=='altus') {
+         this.pieceDataSet.animation[this.parts[j]] = animationaltus
+      } else if (this.parts[j]=='cantus') {
+          this.pieceDataSet.animation[this.parts[j]] = animationcantus
+      } else {
+          console.log("ERROR SETTING ANIMATION "+this.parts[j])
+        }
+      // eval("animation" + this.parts[j].charAt(0).toUpperCase() + this.parts[j].slice(1));
 
       this.theFiles.push({
         "id": this.parts[j],
@@ -449,6 +460,10 @@ function changePiece(){
   player.changePiece()
 }
 
+
+// need to figure out how to switch to different part
+// when the parts are not just Cantus, Altus, Tenor, Basus
+
 function keydownListener(event){
   if (event.code=="KeyC") {
     player.startApp("cantus")
@@ -498,6 +513,7 @@ startButton.addEventListener('click',function(event){
     startButton.innerHTML = 'Stop'
     player.video.currentTime = 0
     player.partModel.startTime= new Date()
+    // TODO -- use the selected part, not 'cantus'
     player.startApp('cantus')
   } else {
     player.running=false;

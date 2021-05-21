@@ -13,6 +13,7 @@ router.get('/', function(req, res, next) {
 router.get('/:pieceId', (req,res) => {
   let pieceId = req.url;
   pieceId = pieceId.slice(1);
+  // let pieceId = req.params.pieceId
   //let result = Piece('parts').find( { _id: pieceId });
   Piece
   .find({
@@ -24,6 +25,7 @@ router.get('/:pieceId', (req,res) => {
     let currOwner = currPiece[0].owner;
     let currParts = currPiece[0].parts;
     let currPieceId = currPiece[0].id;
+    // res.locals.currTitle = currPiece[0].title
     console.log(currTitle);
     res.render('lookhearmodule', { pieceTitle : currTitle, pieceOwner : currOwner, pieceParts : currParts, pieceId : currPieceId });
   })
