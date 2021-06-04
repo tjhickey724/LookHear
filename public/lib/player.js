@@ -97,9 +97,9 @@ class Player {
       this.pieceDataSet.boxSize[this.parts[j]] = 0.12;
       // we need to read get this with a POST call
       if (this.parts[j]=='altus') {
-         this.pieceDataSet.animation[this.parts[j]] = animationaltus
+         this.pieceDataSet.animation[this.parts[j]] = animationAltus
       } else if (this.parts[j]=='cantus') {
-          this.pieceDataSet.animation[this.parts[j]] = animationcantus
+          this.pieceDataSet.animation[this.parts[j]] = animationCantus
       } else {
           console.log("ERROR SETTING ANIMATION "+this.parts[j])
         }
@@ -317,7 +317,9 @@ class Player {
     let imagesize = this.pieceDataSet.imagesize;
 
     // Get the notes for the first part
-    let notes = this.pieceDataSet.animation[this.parts[0]];
+    let notes = this.pieceDataSet.animation[this.parts[0]]
+    console.log('*************\nin player.js#321')
+    console.dir(this.pieceDataSet)
 
     // Make changes to our part model dependent on piece data set
     this.partModel.piece=piece;
