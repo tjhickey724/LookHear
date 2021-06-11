@@ -27,6 +27,11 @@ const initialPartModel = {
 // These are all hardwired for one of the pieces,
 // we need to loa the actual size dynamically when the
 // piece is selected and the image is loaded into the canvas
+
+// this all has to go into the mongo database ...
+// we can calculate the width and height from the images
+// which are uploaded when we create the piece ...
+// or we can calculate it when we load the piece ...
 const pieceDataSet = {
   imagesize:{
      cantus:{width:2551, height:3450},
@@ -57,32 +62,38 @@ class Player {
   *        Parts of the piece set by the user when uploaded into db
   */
 
-  constructor (id, parts, pieceDataSet, initialPartModel) {
+  constructor (id, parts) {
     // Currently, the parts are a comma separated string 'Altus,Cantus,Bassus' and thus must be split
     // TODO: When user creates a piece, parts are not based on a single string
     this.id = id
     this.parts = parts.split(","); //in piece
-    this.currentPart = $("#part").val(); // in player
+    for (let j=0; j<this.parts.length; j++){
+      this.parts[j] = this.parts[j].trim()
+      console.log('parts['+j+']="'+this.parts[j]+'"')
+    }
+    //this.currentPart = this.parts[0];
     this.aspect = 1.0 // in piece
-    this.audio = document.getElementsByTagName("audio")[0]; //move to where needed ...
+
+    //this.audio = document.getElementsByTagName("audio")[0]; //move to where needed ...
     this.partModel = Object.assign({}, initialPartModel) // the piece
-    this.video = document.getElementsByTagName("video")[0]; //move to where needed
+    //this.video = document.getElementsByTagName("video")[0]; //move to where needed
     this.pauseTime = 0; //player
     this.paused = false; //player
 
-    this.pieceDataSet = pieceDataSet //piece
-
+    this.pieceDataSet = pieceDataSet //should get this from the images ....
+    this.partModel.timeOffsets = this.pieceDataSet.timeOffsets;
 
     // Init slider
     //$("#theTime").html(mins+":"+(secs(<10?"0":"")+secs));
-    this.slider = $("#timeSlger");
+    this.slider = document.getElementById("timeSlider");
 
     // move to where needed ... startpart code
     this.partCanvas = document.getElementById("thePart");
     this.partImage = document.getElementById("source");
-    this.partImage.src = "../userpieces/" + this.id + "/media/"+this.currentPart+".jpg";
+    //this.partImage.src = "../userpieces/" + this.id + "/media/"+this.currentPart+".jpg";
+    //console.log('partImage.src=' + this.partImage.src)
 
-    this.running = true; // player
+    //this.running = true; // player
     //this.playloop.bind(this)
 
   }
@@ -101,15 +112,20 @@ class Player {
       } else if (this.parts[j]=='cantus') {
           this.pieceDataSet.animation[this.parts[j]] = animationCantus
       } else {
-          console.log("ERROR SETTING ANIMATION "+this.parts[j])
+          console.log("ERROR SETTING ANIMATION "
+                       +j+" : '"+this.parts[j]+"'")
+          console.dir(this.parts[j])
         }
       // eval("animation" + this.parts[j].charAt(0).toUpperCase() + this.parts[j].slice(1));
-
-      this.theFiles.push({
+      let theFile =
+      {
         "id": this.parts[j],
         "name": '../userpieces/'+ this.id + '/media/' + this.parts[j] + '.mp4',
         "type":'video/mp4'
-      });
+      }
+      console.log('theFile for j='+j)
+      console.dir(theFile)
+      this.theFiles.push(theFile);
     }
   }
 
@@ -298,20 +314,20 @@ class Player {
   }
 
   changePiece(){
-    let piece=$("#thePiece").val();
-    if (piece=="Select a piece"){
-      alert("Please select a piece");
+    let part=$("#thePartName").val();
+    if (part=="Choose Part"){
+      alert("Please select a part");
       return;
     }
-    this.switchPiece(piece);
+    //this.switchPiece(piece);
+    this.switchPart(part)
+    console.log("switched piece!")
   }
 
   switchPiece(piece){
     document.getElementById('startVideos').innerHTML = "Start"
     document.getElementById('startVideos').disabled = true
-    document.getElementById("content").style.display = "none"; // Hide content for loading videos
-    document.getElementById("loadSpin").style.display = "flex"; // Activate loading screen (unhide)
-    document.getElementById("loadSpin2").style.display = "block"; // Activate loading screen bottom
+    document.getElementById("content").style.display = "none"; // Hide content
     console.log(this.pieceDataSet)
     // Get image size from piece data set
     let imagesize = this.pieceDataSet.imagesize;
@@ -327,7 +343,10 @@ class Player {
     this.partModel.notes = notes;
     this.partModel.position=0;
     this.partModel.boxHeight = this.pieceDataSet.boxSize;
-
+    let theMovie = document.getElementById(piece)
+    console.log('theMovie='+theMovie)
+    //$('.musicvideo').setAttribute('width',0)
+    theMovie.setAttribute('width',"100%")
     $(".description").hide();
     $("."+piece).show();
     for (let v = 0; v < this.parts.length; v++) {
@@ -346,11 +365,14 @@ class Player {
     let startTime = new Date();
     startTime = startTime.getTime();
     this.partModel.startTime = startTime;
+    console.log("end of SwitchPiece")
   }
 
   playSelectedFile(fileNum){
     // Get out file object from our files directory
     let fileObj = this.theFiles[fileNum]
+    console.log('fileObj=')
+    console.dir(fileObj)
     let file = fileObj.name
     let id = fileObj.id
 
@@ -362,21 +384,25 @@ class Player {
     let req = new XMLHttpRequest();
     req.open('GET', file, true);
     req.responseType = 'blob';
-    let psf = this.playSelectedFile
+    //let psf = this.playSelectedFile
+    let thePlayer = this
     req.onload = function() {
-       if (this.status === 200) {
-          var videoBlob = this.response;
+      console.log("in reload, thePlayer.status="+thePlayer.status)
+       if (thePlayer.status === 200) {
+          var videoBlob = thePlayer.response;
           var vid = URL.createObjectURL(videoBlob); // IE10+
           videoNode.src = vid;
 
           // TODO:: Change this to grab from outer scope
-          let parts = document.getElementById("lhPieceParts").textContent.split(",")
+          let parts = thePlayer.parts
 
           console.log('just loaded '+file)
           console.log(parts)
-          console.log('this1=',this)
-          console.dir(this)
-          if (fileNum<(parts.length-1)){psf(fileNum+1)} else {
+          console.log('thePlayer=',thePlayer)
+          console.dir(thePlayer)
+          if (fileNum<(parts.length-1)){
+            thePlayer.playSelectedFile(fileNum+1)
+          } else {
             document.getElementById('startVideos').disabled = false
             console.log('disabled = '+ document.getElementById('startVideos').disabled)
             document.getElementById("loadSpin2").style.display = ""; // Videos done loading, hide loading screen
@@ -386,6 +412,7 @@ class Player {
        }
     }
     req.onerror = function() {
+      console.log("inside req.error")
     }
     req.send();
     return videoNode
@@ -447,87 +474,102 @@ class Player {
     }
   }
 
+}  // end of the class Player
+
+let player = undefined
+
+function startPlayer(pieceId,pieceParts){
+  // used to be changePiece ...
+
+
+    let id = pieceId;
+    let parts = pieceParts;
+    console.log('These are the parts from elementid')
+    console.log(parts)
+
+    player = new Player(pieceId, pieceParts)
+    player.initFiles()
+
+
+
+
+
+
+    // need to figure out how to switch to different part
+    // when the parts are not just Cantus, Altus, Tenor, Basus
+
+    function keydownListener(event){
+      if (event.code=="KeyC") {
+        player.startApp("cantus")
+      } else if (event.code=="KeyA") {
+        player.startApp("altus")
+      } else if (event.code=="KeyT") {
+        player.startApp("tenor")
+      } else if (event.code=="KeyB") {
+        player.startApp("bassus")
+      } else if (event.code=="KeyF") {
+        player.startApp("score")
+      } else if (event.code=="KeyX") {
+        player.startApp("mastermenu")
+      } else if (event.code=="KeyP") {
+        player.pauseApp();
+      } else if (event.code=="KeyS") {
+        player.video.currentTime = 0;
+        player.partModel.startTime= new Date();
+      }
+    }
+
+    document.addEventListener("keydown",keydownListener);
+
+
+    $('input[type="range"]').rangeslider({
+      onInit: function() {
+        console.log("init");
+      },
+      onSlide: function(pos, value) {
+        console.log("pos="+pos+" val="+val);
+        if (!player.running) {
+          startTime = new Date();
+          player.startTime = startTime.getTime();
+          player.running=true;
+          player.playLoop();
+        }
+      }
+    }).on('input', function() {
+      //console.log("val="+this.value);
+      player.partModel.startTime -= (this.value - player.partModel.currentTime)
+      player.video.currentTime = this.value/1000.0;
+    });
+
+    let startButton = document.getElementById('startVideos')
+    startButton.addEventListener('click',function(event){
+      if (startButton.innerHTML.trim()=='Start'){
+        startButton.innerHTML = 'Stop'
+        player.video.currentTime = 0
+        player.partModel.startTime= new Date()
+        // TODO -- use the selected part, not 'cantus'
+        player.startApp('cantus')
+      } else {
+        player.running=false;
+        player.video.currentTime = 0
+        player.video.pause();
+        startButton.innerHTML = 'Start'
+      }
+    })
+
+    var myLayout = $('div#container').layout();
+    myLayout.sizePane("west","40%");
+    myLayout.sizePane("east","20%");
+    myLayout.sizePane("south","20%");
+    $(".description").hide();
+    $(".partintro").show();
 }
 
-let id = document.getElementById("lhPieceId").textContent;
-let parts = document.getElementById("lhPieceParts").textContent;
-console.log('These are the parts from elementid')
-console.log(parts)
 
-// Insantiate player and grab files
-let player = new Player(id, parts, pieceDataSet, initialPartModel)
-player.initFiles()
-
-function changePiece(){
+function changePart(){
   player.changePiece()
 }
 
-
-// need to figure out how to switch to different part
-// when the parts are not just Cantus, Altus, Tenor, Basus
-
-function keydownListener(event){
-  if (event.code=="KeyC") {
-    player.startApp("cantus")
-  } else if (event.code=="KeyA") {
-    player.startApp("altus")
-  } else if (event.code=="KeyT") {
-    player.startApp("tenor")
-  } else if (event.code=="KeyB") {
-    player.startApp("bassus")
-  } else if (event.code=="KeyF") {
-    player.startApp("score")
-  } else if (event.code=="KeyX") {
-    player.startApp("mastermenu")
-  } else if (event.code=="KeyP") {
-    player.pauseApp();
-  } else if (event.code=="KeyS") {
-    player.video.currentTime = 0;
-    player.partModel.startTime= new Date();
-  }
+function resizePart(){
+  player.resizePart()
 }
-
-document.addEventListener("keydown",keydownListener);
-
-
-$('input[type="range"]').rangeslider({
-  onInit: function() {
-    console.log("init");
-  },
-  onSlide: function(pos, value) {
-    console.log("pos="+pos+" val="+val);
-    if (!player.running) {
-      startTime = new Date();
-      player.startTime = startTime.getTime();
-      player.running=true;
-      player.playLoop();
-    }
-  }
-}).on('input', function() {
-  //console.log("val="+this.value);
-  player.partModel.startTime -= (this.value - player.partModel.currentTime)
-  player.video.currentTime = this.value/1000.0;
-});
-
-let startButton = document.getElementById('startVideos')
-startButton.addEventListener('click',function(event){
-  if (startButton.innerHTML.trim()=='Start'){
-    startButton.innerHTML = 'Stop'
-    player.video.currentTime = 0
-    player.partModel.startTime= new Date()
-    // TODO -- use the selected part, not 'cantus'
-    player.startApp('cantus')
-  } else {
-    player.running=false;
-    player.video.currentTime = 0
-    player.video.pause();
-    startButton.innerHTML = 'Start'
-  }
-})
-
-var myLayout = $('div#container').layout();
-myLayout.sizePane("west","40%");
-myLayout.sizePane("east","20%");
-myLayout.sizePane("south","20%");
-$(".description").hide();
-$(".partintro").show();

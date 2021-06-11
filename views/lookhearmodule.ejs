@@ -17,111 +17,166 @@
      </div>
    </div>
 <div id="content">
-<div class="flex-container" id="container">
-  <div class="pane ui-layout-north">
-    <h1>LookHear: <%= pieceTitle %></h1>
-    <p id="description">An insider’s view of 16th-c polyphony: its notation and its sound - developed by Timothy Hickey & Sarah Mead</p><br/><span id="message"></span>
-    <button id="startVideos" disabled="disabled">Start</button>
-    <select id="thePiece" onChange="changePiece()">
-      <option value = "Choose Part" selected>Choose Part</option>
-      <% partsSplit = pieceParts.split(","); %>
-      <% for(let j = 0; j< partsSplit.length; j++) {%>
-        <option value=<%= partsSplit[j] %>><%= partsSplit[j] %></option>
-      <% } %>
-    </select>
-    <button onclick="resizePart()" style="float:right">refresh</button>
-  </div>
-  <div class="pane ui-layout-center"><span id="theTime">0.00</span>
-    <div id="slider">
-      <input id="timeSlider" type="range" min="0" max="100" step="1" value="0" data-orientation="vertical" width="100%"/>
-    </div>
-    <div class="part nopadding" id="partdiv"><img class="noPadding2" id="source" src="" width="0" height="0" alt="part"/>
-      <canvas id="thePart" width="100%"></canvas>
-    </div>
-  </div>
-  <div class="pane ui-layout-south">
-    <h3>How to use <span class="lookhear"> LookHear</span></h3><br/>
-    <p id="description">
-      <span class="insttitle">Choose a piece from the menu in the upper-right corner:</span><br>
-      The left-hand window lets you watch the players; the center window displays the notation.<br>
-      Adjust the relative size of the windows by clicking and sliding the dividing-bar.<br>
-      Close or open any window by clicking the center of the dividing-bar.
-    </p><br/><br/>
-    <p id="description"></p>
-    <span class="insttitle">Navigate with the letter keys:</span><br>
-    Choose to watch the full group (S) or all five camera-angles (X) alongside the modern score.<br>
-    Navigate among the individual parts to see the original notation:
-    Cantus (C), Altus (A), Tenor (T) and Bassus (B)<br/><br/>
-    <p id="description"></p>
-    <span class="insttitle">Play the music:</span><br>
-    Use the time-slider to fast-forward or move to a specific point in the music.<br>
-    Press the P key to Pause and Play.
-    Press the S key to return to the Start of the piece.
-  </div>
-  <div class="pane ui-layout-east" style="width:50%">
-    <h1>The Music</h1>
-    <div class="partintro description">Select a piece of music using the menu in the upper right corner of the screen.</div>
-    <div class="ortoMotet description">
-      <p>Marbrianus de Orto (c.1460-1529)<br><i>Ave Maria gratia plena</i><br/>4-voice motet based on plainsong melody</p>
-      <p><span class="desctitle">Source</span><br/>
-        Petrucci: <i>Harmonice musices odhecaton A</i> (Venice, 1501)
-        Single book with all parts on facing pages<br>
-        1st piece [A3v-A4r] of 96 in the collection<br>
-      </p>
-      <p>
-        <span class="desctitle">Performers:</span><br>
-        <b>Nota Bene</b> viol consort<br>
-        <i>Cantus:</i> Sarah Mead<br>
-        <i>Altus:</i> Wendy Gillespie<br>
-        <i>Tenor:</i> Joanna Blendulf<br>
-        <i>Bassus:</i> Emily Walhout
-      </p>
-    </div>
-    <div class="zirlerMotet description">
-      <p>
-        Stephan Zirler (c.1518-1568)<br>
-        <i>Beati omnes qui timent Dominum</i><br>
-        4-voice motet
-      </p>
-      <p>
-        <span class="desctitle">Source:</span><br>
-        Stephani: <i>Beati omnes. Psalmus CXXVII. Davidis.</i> (Nuremberg, 1569) <br>
-        Four individual partbooks containing multiple settings of Psalm 128
-        in 6, 5, and 4 parts<br>
-        15th [XV] of 17 settings by different composers<br>
-      </p>
-      <p>
-        <span class="desctitle">Performers:</span><br>
-        <b>Nota Bene</b> viol consort<br>
-        <i>Cantus:</i> Wendy Gillespie<br>
-        <i>Altus:</i> Sarah Mead<br>
-        <i>Tenor:</i> Joanna Blendulf<br>
-        <i>Bassus:</i> Emily Walhout
-      </p>
-    </div>
-  </div>
-  <div class="pane ui-layout-west">
-      <% partsSplit = pieceParts.split(","); %>
-      <% for(let j = 0; j< partsSplit.length; j++) {%>
-        <option style="visibility: hidden;" value=<%= partsSplit[j] %>><%= partsSplit[j] %></option>
-        <video width = "0%" id= <%= partsSplit[j] %> class="musicvideo noPadding">
-             <source id=<%= partsSplit[j] %> + "-source" src= "../userpieces/" + <%= pieceId %> + "/media/" + <%= partsSplit[j] %> + '.mp4'>
-        </video>
-      <% } %>
-  </div>
-</div>
-<!-- Passing information to score app module through div elements -->
-<div id="lhPieceId" style="visibility: hidden;"><%= pieceId %></div>
-<div id="lhPieceParts" style="visibility: hidden;"><%= pieceParts %></div>
-<div id="lhPieceTitle" style="visibility: hidden;"><%= pieceTitle %></div>
+    <div class="flex-container" id="container">
 
+      <div class="pane ui-layout-north">
+        <h1>LookHear: <%= pieceTitle %></h1>
+        <p id="description">An insider’s view of 16th-c polyphony: its notation and its sound - developed by Timothy Hickey & Sarah Mead</p><br/><span id="message"></span>
+        <button id="startVideos" disabled="disabled">Start</button>
+        <select id="thePartName" onChange="changePart()">
+          <option value = "Choose Part" selected>
+            Choose Part
+          </option>
+          <% partsSplit = pieceParts.split(",");
+             for(let j = 0; j< partsSplit.length; j++) {
+          %>
+                <option value=<%= partsSplit[j] %>    >
+                  <%= partsSplit[j] %>
+                </option>
+          <% } %>
+        </select>
+        <button
+              onclick="resizePart()"
+              style="float:right">
+            refresh
+        </button>
+      </div>
+
+      <div class="pane ui-layout-center">
+        <span id="theTime">0.00</span>
+        <div id="slider">
+          <input
+              id="timeSlider"
+              type="range" min="0" max="100" step="1" value="0"
+              data-orientation="vertical"
+              width="100%" />
+        </div>
+
+        <div class="part nopadding" id="partdiv">
+          <img class="noPadding2" id="source"
+               src="" width="0" height="0" alt="part"/>
+          <canvas id="thePart" width="100%">
+          </canvas>
+        </div>
+      </div>
+
+
+      <div class="pane ui-layout-south">
+        <h3>How to use
+             <span class="lookhear"> LookHear</span>
+        </h3>
+        <br/>
+        <p id="description">
+          <span class="insttitle">Choose a piece from the menu in the upper-right corner:</span><br>
+          The left-hand window lets you watch the players; the center window displays the notation.<br>
+          Adjust the relative size of the windows by clicking and sliding the dividing-bar.<br>
+          Close or open any window by clicking the center of the dividing-bar.
+        </p><br/><br/>
+
+        <p id="description2"></p>
+        <span class="insttitle">Navigate with the letter keys:</span><br>
+        Choose to watch the full group (S) or all five camera-angles (X) alongside the modern score.<br>
+        Navigate among the individual parts to see the original notation:
+        Cantus (C), Altus (A), Tenor (T) and Bassus (B)<br/><br/>
+
+        <p id="description3"></p>
+        <span class="insttitle">Play the music:</span><br>
+        Use the time-slider to fast-forward or move to a specific point in the music.<br>
+        Press the P key to Pause and Play.
+        Press the S key to return to the Start of the piece.
+      </div>
+
+
+      <div class="pane ui-layout-east" style="width:50%">
+        <h1>The Music</h1>
+        <div class="partintro description">
+          Select a piece of music using the menu in the upper right corner of the screen.
+        </div>
+        <div class="ortoMotet description">
+          <p>Marbrianus de Orto (c.1460-1529)<br><i>Ave Maria gratia plena</i><br/>4-voice motet based on plainsong melody</p>
+          <p><span class="desctitle">Source</span><br/>
+            Petrucci: <i>Harmonice musices odhecaton A</i> (Venice, 1501)
+            Single book with all parts on facing pages<br>
+            1st piece [A3v-A4r] of 96 in the collection<br>
+          </p>
+          <p>
+            <span class="desctitle">Performers:</span><br>
+            <b>Nota Bene</b> viol consort<br>
+            <i>Cantus:</i> Sarah Mead<br>
+            <i>Altus:</i> Wendy Gillespie<br>
+            <i>Tenor:</i> Joanna Blendulf<br>
+            <i>Bassus:</i> Emily Walhout
+          </p>
+        </div>
+        <div class="zirlerMotet description">
+          <p>
+            Stephan Zirler (c.1518-1568)<br>
+            <i>Beati omnes qui timent Dominum</i><br>
+            4-voice motet
+          </p>
+          <p>
+            <span class="desctitle">Source:</span><br>
+            Stephani: <i>Beati omnes. Psalmus CXXVII. Davidis.</i> (Nuremberg, 1569) <br>
+            Four individual partbooks containing multiple settings of Psalm 128
+            in 6, 5, and 4 parts<br>
+            15th [XV] of 17 settings by different composers<br>
+          </p>
+          <p>
+            <span class="desctitle">Performers:</span><br>
+            <b>Nota Bene</b> viol consort<br>
+            <i>Cantus:</i> Wendy Gillespie<br>
+            <i>Altus:</i> Sarah Mead<br>
+            <i>Tenor:</i> Joanna Blendulf<br>
+            <i>Bassus:</i> Emily Walhout
+          </p>
+        </div>
+      </div>
+
+
+      <div class="pane ui-layout-west">
+
+          <% partsSplit = pieceParts.split(",");
+             for (let j = 0; j< partsSplit.length; j++) {
+               thePart = partsSplit[j]
+               videoURL = "../userpieces/" +  pieceId + "/media/" +  thePart + '.mp4'
+               console.log('part='+j+' videoURL='+videoURL)
+               console.log('thePart="'+thePart+'"')
+          %>
+            <video
+                width = "0%"
+                id= <%= thePart %>
+                class="musicvideo"
+            >
+                 <source
+                   id=<%= thePart %> + "-source"
+                   src= "<%= videoURL %>"
+                  >
+            </video>
+          <% } %>
+
+      </div>
+    </div>
+    <!-- Passing information to score app module through div elements -->
+    <div id="lhPieceId" style="visibility: hidden;">
+      <%= pieceId %>
+    </div>
+    <div id="lhPieceParts" style="visibility: hidden;">
+      <%= pieceParts %>
+    </div>
+    <div id="lhPieceTitle" style="visibility: hidden;">
+      <%= pieceTitle %>
+    </div>
 </div>
 <script type="text/javascript" src="../js/jquery.js"></script>
 <script type="text/javascript" src="../js/jquery-ui.js"></script>
 <script type="text/javascript" src="../js/jquery.layout.js"></script>
 <% partsSplit = pieceParts.split(","); %>
-<% for(let j = 0; j< partsSplit.length; j++) {%>
-  <script src=<%= "../userpieces/" + pieceId + "/animations/" + partsSplit[j] + ".js" %>></script>
+<% for(let j = 0; j< partsSplit.length; j++) {
+      animationURL =
+        "../userpieces/" + pieceId + "/animations/" + partsSplit[j] + ".js"
+%>
+  <script src="<%= animationURL %>">
+  </script>
 <% } %>
 <script>
 console.log("reading the animations")
@@ -134,6 +189,10 @@ console.log(animationAltus)
 <script src="../lib/rangeslider.js"></script>
 
 <script src="../lib/player.js"></script>
+<script>
+// Insantiate player and grab files
+startPlayer("<%= pieceId %>", "<%= pieceParts %>")
+</script>
 
 <!-- OLD Scripts
 <script src="../lib/animation2.js"></script>
