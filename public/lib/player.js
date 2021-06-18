@@ -90,8 +90,8 @@ class Player {
     // move to where needed ... startpart code
     this.partCanvas = document.getElementById("thePart");
     this.partImage = document.getElementById("source");
-    //this.partImage.src = "../userpieces/" + this.id + "/media/"+this.currentPart+".jpg";
-    //console.log('partImage.src=' + this.partImage.src)
+    this.partImage.src = "../userpieces/" + this.id + "/media/"+this.currentPart+".jpg";
+    console.log('partImage.src=' + this.partImage.src)
 
     //this.running = true; // player
     //this.playloop.bind(this)
@@ -139,7 +139,10 @@ class Player {
   }
 
   startApp(part){
-    this.video.muted=true
+    // TODO check that this.video is set before startApp is called
+    if (this.video) {
+      this.video.muted=true
+    }
 
     this.switchVideo(part);
     this.switchPart(part);
@@ -215,23 +218,31 @@ class Player {
 
   switchPart(part) {
     this.currentPart = part;
+    console.log('pieceDataSet=')
+    console.dir(this.pieceDataSet)
 
     // Init the box height and time offset for the part
     this.partModel.boxHeight = this.pieceDataSet.boxSize[part];
     this.partModel.timeOffset = this.partModel.timeOffsets[part];
 
     this.animation = this.pieceDataSet.animation;
+    console.log('inside switchPart')
     this.selectThePart(part);
+    console.log('after switchPart')
     this.initPart();
-    let ctx = this.partCanvas;
+    console.log('after initPart')
+    let ctx = this.partCanvas.getContext('2d');
     this.drawPart(ctx);
+    console.log('drew the part')
   }
 
   drawPart(ctx) {
     ctx.fillStyle = "blue";
     ctx.strokeStyle = "blue";
-
+    console.log('before drawImage')
     this.drawImage();
+
+    console.log('after drawImage')
 
     let backgroundColor = "rgba(112,66,20,0.2)";
     let foregroundColor = "rgba(255,215,0,0.2)";
@@ -310,6 +321,7 @@ class Player {
   }
 
   resizePart(){
+    console.log(this.partCanvas.width)
     this.partCanvas.width = partdiv.offsetWidth;
   }
 
@@ -319,7 +331,8 @@ class Player {
       alert("Please select a part");
       return;
     }
-    //this.switchPiece(piece);
+    console.log(`call switchPiece(${part})`)
+    this.switchPiece(part);
     this.switchPart(part)
     console.log("switched piece!")
   }
@@ -327,14 +340,16 @@ class Player {
   switchPiece(piece){
     document.getElementById('startVideos').innerHTML = "Start"
     document.getElementById('startVideos').disabled = true
-    document.getElementById("content").style.display = "none"; // Hide content
-    console.log(this.pieceDataSet)
+    //document.getElementById("content").style.display = "none"; // Hide content
+    console.log(`inside switchPiece(${piece})`)
+
+
     // Get image size from piece data set
     let imagesize = this.pieceDataSet.imagesize;
 
     // Get the notes for the first part
     let notes = this.pieceDataSet.animation[this.parts[0]]
-    console.log('*************\nin player.js#321')
+    console.log('*************\nin switchPiece')
     console.dir(this.pieceDataSet)
 
     // Make changes to our part model dependent on piece data set
@@ -345,14 +360,20 @@ class Player {
     this.partModel.boxHeight = this.pieceDataSet.boxSize;
     let theMovie = document.getElementById(piece)
     console.log('theMovie='+theMovie)
+
+
     //$('.musicvideo').setAttribute('width',0)
     theMovie.setAttribute('width',"100%")
     $(".description").hide();
     $("."+piece).show();
+    console.dir(theMovie)
+
+    /*
     for (let v = 0; v < this.parts.length; v++) {
       this.playSelectedFile(v);
     }
     this.playSelectedFile(0)
+    */
     this.switchVideo(this.parts[0]);
     this.switchPart(this.parts[0]);
     $("input[type='range']").val(0);
@@ -366,6 +387,7 @@ class Player {
     startTime = startTime.getTime();
     this.partModel.startTime = startTime;
     console.log("end of SwitchPiece")
+    console.dir(this)
   }
 
   playSelectedFile(fileNum){
@@ -423,9 +445,12 @@ class Player {
     this.partImage = document.getElementById("source");
     let piece = this.partModel.piece; //$("#thePiece").val();
     this.partImage.src= "../userpieces/" + this.id + "/media/"+part+".jpg";
+    console.log(`selectThePart(${part})`)
+    console.dir(this.partImage.src)
     let ctx = this.partCanvas.getContext("2d");
     this.partImage= document.getElementById("source");
     ctx.drawImage(this.partImage,0,0,window.innerWidth,window.innerWidth*4/3);
+    console.log("drew the music image")
 
     this.drawPart(ctx);
     let notes = this.pieceDataSet.animation[part];
@@ -478,19 +503,17 @@ class Player {
 
 let player = undefined
 
-function startPlayer(pieceId,pieceParts){
+function startPlayer(id,parts){
   // used to be changePiece ...
 
 
-    let id = pieceId;
-    let parts = pieceParts;
-    console.log('These are the parts from elementid')
+    console.log('These are the parts from elementid '+id)
     console.log(parts)
 
-    player = new Player(pieceId, pieceParts)
+    player = new Player(id, parts)
     player.initFiles()
 
-
+document.p = player
 
 
 
