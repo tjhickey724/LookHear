@@ -154,18 +154,7 @@
       </div>
     </div>
 
-    <!--  WHY ARE THESE NEEDED???
 
-    Passing information to score app module through div elements -->
-    <div id="lhPieceId" style="visibility: hidden;">
-      <%= pieceId %>
-    </div>
-    <div id="lhPieceParts" style="visibility: hidden;">
-      <%= pieceParts %>
-    </div>
-    <div id="lhPieceTitle" style="visibility: hidden;">
-      <%= pieceTitle %>
-    </div>
 </div>
 <script type="text/javascript" src="../js/jquery.js"></script>
 <script type="text/javascript" src="../js/jquery-ui.js"></script>
@@ -199,7 +188,7 @@ console.dir('<%- piece.id %>')
 console.log("********* About to call startPlayer")
 </script>
 <script>
-startPlayer('<%- piece.id %>',(<%- JSON.stringify(piece.parts) %>))
+startPlayer('<%- piece.id %>',(<%- JSON.stringify(piece.parts) %>),'<%- piece.title %>')
 console.log("********* Called startPlayer")
 </script>
 

@@ -34,9 +34,10 @@ const initialPartModel = {
 // we can calculate the width and height from the images
 // which are uploaded when we create the piece ...
 // or we can calculate it when we load the piece ...
+
 const pieceDataSet = {
   imagesize:{
-     cantus:{width:2551, height:3450},
+     cantus:{width:2551, height:3450},  // this.partImage.naturalWidth
      altus:{width:2549, height:3749},
       tenor:{width:2549, height:3751},
      bassus:{width:2548, height:3749},
@@ -108,8 +109,8 @@ class Player {
   initFiles() {
 
     this.theFiles = [];
-
-    this.pieceDataSet["pieceName"] = document.getElementById("lhPieceTitle").textContent;
+// THIS IS VERY UGLY..... LETS GET RID OF IT... PASS IN TITLE, ETC THROUGH PLAYER ...
+    //this.pieceDataSet["pieceName"] = document.getElementById("lhPieceTitle").textContent;
     for (let j = 0; j < this.parts.length; j++) {
       this.pieceDataSet.timeOffsets[this.parts[j]] = 0;
       this.pieceDataSet.boxSize[this.parts[j]] = 0.12;
@@ -431,8 +432,11 @@ class Player {
     this.partImage = document.getElementById("source");
     let w = this.partCanvas.width+0.0;
     let thePart = this.currentPart
-    let imagesize = this.pieceDataSet.imagesize;
-    let aspect = imagesize[this.currentPart.toString()].height/imagesize[this.currentPart.toString()].width;
+    //let imagesize = this.pieceDataSet.imagesize;
+    //let aspect = imagesize[this.currentPart.toString()].height/imagesize[this.currentPart.toString()].width;
+    let w1 = this.partImage.naturalWidth
+    let h1 = this.partImage.naturalHeight
+    let aspect = h1/w1
     let ctx = this.partCanvas.getContext("2d");
     ctx.drawImage(this.partImage,
       this.partModel.xOffset*w,
@@ -523,7 +527,7 @@ class Player {
 
 let player = undefined
 
-function startPlayer(id,parts){
+function startPlayer(id,parts,title){
   // used to be changePiece ...
 
 
@@ -532,6 +536,7 @@ function startPlayer(id,parts){
 
     player = new Player(id, parts)
     player.initFiles()
+    player.title = title
 
     document.p = player
 
