@@ -4,13 +4,13 @@
  this is the javascript that controls the animatepagemodule.ejs page
 
  it has a lot of hardcoded constants which need to be improved.
- 
+
 
 */
 
 
 //PLAYBACK CODE
-console.log("in scoreapp!");
+console.log("in scoreappmodule.js!");
 
 // We get our piece id and our piece parts from elements in the view
 let parts = document.getElementById("saPieceParts").textContent;
@@ -167,13 +167,46 @@ function playLoop(){
 
 
 // DRAWING THE VIEW USING THE MODEL
+function drawNotes(ctx){
+  /*
+   draw all of the notes on the score or part
+   the notes are in the partmodel.notes array
+   each element has the form:
+   {"action":"cursor",
+    "time":"36622",
+    "x":0.5967302452316077,
+    "y":0.2,
+    "yoff":0.11571298819255224},
+    So we need to draw a box location x and y+yoffset
+
+    Let's draw the box for the first note!
+  */
+  console.log('in drawNotes '+partModel.notes.length)
+  console.log(JSON.stringify(partModel.notes))
+  ctx.fillStyle = "rgba(0,0,0,0.5)";
+
+  for(let i =0; i<partModel.notes.length; i++){
+
+    let n=partModel.notes[i]
+    let w = thePartCanvas.width+0.0;
+    console.log(`i=${i} n = ${JSON.stringify(n)}` )
+    console.log(`ctx.fillRect(${(n.x-partModel.boxWidth/2)*w},${ (n.y+n.yoffset-partModel.boxHeight/2)*w},${      0.015*w},${      partModel.boxHeight*w} );`)
+    ctx.fillRect(
+      (n.x-partModel.boxWidth/2)*w,
+      (n.y+n.yoffset-partModel.boxHeight/2)*w,
+      0.015*w,
+      partModel.boxHeight*w
+    );
+
+  }
+}
 
 function drawPart(){
   ctx = thePartCanvas.getContext("2d");
   ctx.fillStyle="blue";
 
   drawImage(ctx);
-
+  drawNotes(ctx);
 
   ctx.strokeStyle = 'blue';
   //ctx.fillRect(0,250,40,10);
